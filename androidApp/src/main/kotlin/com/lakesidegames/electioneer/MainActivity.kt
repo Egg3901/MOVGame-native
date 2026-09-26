@@ -50,7 +50,7 @@ fun MarginOfVictoryApp(session: GameSession) {
                             selected = screen == Screen.SETUP ||
                                 screen == Screen.GAME ||
                                 screen == Screen.RESULTS,
-                            onClick = { session.go(Screen.SETUP) },
+                            onClick = { session.playTab() },
                             icon = {
                                 Icon(Icons.Filled.PlayArrow, contentDescription = "Play")
                             },

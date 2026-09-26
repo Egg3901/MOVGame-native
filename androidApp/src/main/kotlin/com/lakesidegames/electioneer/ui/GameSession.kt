@@ -60,6 +60,16 @@ class GameSession : ViewModel() {
         _screen.value = s
     }
 
+    // Play tab resumes the live game (or result) instead of stranding it.
+    fun playTab() {
+        val g = _game.value
+        _screen.value = when {
+            g == null -> Screen.SETUP
+            g.phase == GamePhase.RESULT -> Screen.RESULTS
+            else -> Screen.GAME
+        }
+    }
+
     fun newGame(player: CandidateId, difficulty: String) {
         // androidApp may use the wall clock; common code stays clock-free.
         turnSeed = System.currentTimeMillis().toString()

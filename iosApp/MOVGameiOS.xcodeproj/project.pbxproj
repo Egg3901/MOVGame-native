@@ -7,7 +7,7 @@
 	objects = {
 		7A0000010000000000000001 = {
 			isa = PBXProject;
-			buildConfigurationList = 7A000001000000000000000E;
+			buildConfigurationList = 7A000001000000000000001D;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -28,6 +28,12 @@
 				7A0000010000000000000009,
 				7A000001000000000000000A,
 				7A000001000000000000000B,
+				7A000001000000000000001D,
+				7A000001000000000000001E,
+				7A000001000000000000001F,
+				7A0000010000000000000020,
+				7A0000010000000000000021,
+				7A0000010000000000000022,
 				7A0000010000000000000003,
 			);
 			sourceTree = "<group>";
@@ -42,8 +48,9 @@
 		};
 		7A0000010000000000000004 = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7A0000010000000000000011;
+			buildConfigurationList = 7A0000010000000000000020;
 			buildPhases = (
+				7A0000010000000000000019,
 				7A0000010000000000000005,
 				7A0000010000000000000006,
 				7A0000010000000000000007,
@@ -63,6 +70,12 @@
 			files = (
 				7A000001000000000000000C,
 				7A000001000000000000000D,
+				7A0000010000000000000023,
+				7A0000010000000000000024,
+				7A0000010000000000000025,
+				7A0000010000000000000026,
+				7A0000010000000000000027,
+				7A0000010000000000000028,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,8 +83,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A0000010000000000000029,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A0000010000000000000019 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Compile Kotlin Shared";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT/..\" && ./gradlew :shared:embedAndSignAppleFrameworkForXcode";
 		};
 		7A0000010000000000000007 = {
 			isa = PBXResourcesBuildPhase;
@@ -113,16 +141,86 @@
 			isa = PBXBuildFile;
 			fileRef = 7A000001000000000000000A;
 		};
-		7A000001000000000000000E = {
+		7A000001000000000000001D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = GameSession.swift;
+			sourceTree = "<group>";
+		};
+		7A000001000000000000001E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = TileMapView.swift;
+			sourceTree = "<group>";
+		};
+		7A000001000000000000001F = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = SetupView.swift;
+			sourceTree = "<group>";
+		};
+		7A0000010000000000000020 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = GameView.swift;
+			sourceTree = "<group>";
+		};
+		7A0000010000000000000021 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = ResultsView.swift;
+			sourceTree = "<group>";
+		};
+		7A0000010000000000000022 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = MiscViews.swift;
+			sourceTree = "<group>";
+		};
+		7A0000010000000000000023 = {
+			isa = PBXBuildFile;
+			fileRef = 7A000001000000000000001D;
+		};
+		7A0000010000000000000024 = {
+			isa = PBXBuildFile;
+			fileRef = 7A000001000000000000001E;
+		};
+		7A0000010000000000000025 = {
+			isa = PBXBuildFile;
+			fileRef = 7A000001000000000000001F;
+		};
+		7A0000010000000000000026 = {
+			isa = PBXBuildFile;
+			fileRef = 7A0000010000000000000020;
+		};
+		7A0000010000000000000027 = {
+			isa = PBXBuildFile;
+			fileRef = 7A0000010000000000000021;
+		};
+		7A0000010000000000000028 = {
+			isa = PBXBuildFile;
+			fileRef = 7A0000010000000000000022;
+		};
+		7A0000010000000000000029 = {
+			isa = PBXBuildFile;
+			fileRef = 7A000001000000000000002A;
+		};
+		7A000001000000000000002A = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.framework;
+			path = shared.framework;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7A000001000000000000001D = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7A000001000000000000000F,
-				7A0000010000000000000010,
+				7A000001000000000000001E,
+				7A000001000000000000001F,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7A000001000000000000000F = {
+		7A000001000000000000001E = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -136,6 +234,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJ_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -156,7 +255,7 @@
 			};
 			name = Debug;
 		};
-		7A0000010000000000000010 = {
+		7A000001000000000000001F = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -171,6 +270,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJ_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;
@@ -181,16 +281,16 @@
 			};
 			name = Release;
 		};
-		7A0000010000000000000011 = {
+		7A0000010000000000000020 = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7A0000010000000000000012,
-				7A0000010000000000000013,
+				7A0000010000000000000021,
+				7A0000010000000000000022,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7A0000010000000000000012 = {
+		7A0000010000000000000021 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -211,7 +311,7 @@
 			};
 			name = Debug;
 		};
-		7A0000010000000000000013 = {
+		7A0000010000000000000022 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;

@@ -1,21 +1,37 @@
 import SwiftUI
 
-// Phase 0 stub: proves the Xcode project builds on macOS CI. Real screens
-// (Setup/Game/Results/Store/Account) mirror androidApp in Phase 4, and the
-// shared KMP framework linkage is a tracked follow-up (see docs/kmp-scaffold.md).
+// Phase 4: Play tab switches Setup/Game/Results; Store/Account are shells
+// until Phase 5. Mirrors the Android bottom nav.
 struct ContentView: View {
+    @ObservedObject var session: GameSession
+
     var body: some View {
-        VStack(spacing: 12) {
-            Text("Margin of Victory")
-                .font(.largeTitle)
-            Text("Hello from the iOS shell. The shared engine lands in Phase 1.")
-                .font(.footnote)
-                .multilineTextAlignment(.center)
+        TabView(selection: $session.tab) {
+            playTab
+                .tabItem { Label("Play", systemImage: "play.fill") }
+                .tag(0)
+            StoreView()
+                .tabItem { Label("Store", systemImage: "cart") }
+                .tag(1)
+            AccountView()
+                .tabItem { Label("Account", systemImage: "person.crop.circle") }
+                .tag(2)
         }
-        .padding()
+    }
+
+    @ViewBuilder
+    private var playTab: some View {
+        switch session.playScreen {
+        case .setup:
+            SetupView(session: session)
+        case .game:
+            GameView(session: session)
+        case .results:
+            ResultsView(session: session)
+        }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(session: GameSession())
 }
