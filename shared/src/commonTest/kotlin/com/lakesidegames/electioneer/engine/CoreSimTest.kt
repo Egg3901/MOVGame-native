@@ -42,7 +42,7 @@ class CoreSimTest {
         mediaMarketCost = 1.0,
         battleground = false,
         blocs = blocs,
-        groundGame = emptyMap(),
+        groundGame = mutableMapOf(),
         momentum = momentum,
         aggregateOf = aggregateOf,
     )
@@ -74,15 +74,15 @@ class CoreSimTest {
         playerCandidate = CandidateId.DEM,
         candidates = emptyMap(),
         issues = emptyMap(),
-        salience = emptyMap(),
+        salience = mutableMapOf(),
         states = listOf(pa, oh, hi, lo, me1, me2, meAl),
         resources = emptyMap(),
-        pendingEvents = emptyList(),
-        firedEventIds = emptyList(),
+        pendingEvents = mutableListOf(),
+        firedEventIds = mutableListOf(),
         queuedActions = emptyList(),
         causes = listOf(0.5, -0.5, 0.3, 0.3, -0.2, 0.1, 0.0, 1.5, -1.2, 0.8).mapIndexed { i, d ->
             CauseEntry(turn = 1, cause = "c$i", marginDelta = d)
-        },
+        }.toMutableList(),
         lastRecap = emptyList(),
     )
 

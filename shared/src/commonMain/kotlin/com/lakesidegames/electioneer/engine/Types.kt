@@ -115,15 +115,28 @@ data class Issue(
     val blurb: String,
 )
 
+// All var: debate/policy prep raise these, turn decay relaxes them back.
 data class CandidateTraits(
-    val charisma: Double,
-    val energy: Double,
-    val debatePrep: Double,
-    val intelligence: Double,
-    val policyKnowledge: Double,
-    val debatingSkill: Double,
-    val fundraisingProwess: Double,
-)
+    var charisma: Double,
+    var energy: Double,
+    var debatePrep: Double,
+    var intelligence: Double,
+    var policyKnowledge: Double,
+    var debatingSkill: Double,
+    var fundraisingProwess: Double,
+) {
+    // String-indexed read for trait-gated event choices (TS: traits[trait]).
+    operator fun get(name: String): Double = when (name) {
+        "charisma" -> charisma
+        "energy" -> energy
+        "debatePrep" -> debatePrep
+        "intelligence" -> intelligence
+        "policyKnowledge" -> policyKnowledge
+        "debatingSkill" -> debatingSkill
+        "fundraisingProwess" -> fundraisingProwess
+        else -> 0.0
+    }
+}
 
 data class Candidate(
     val id: CandidateId,
@@ -136,7 +149,7 @@ data class Candidate(
     // Immutable snapshot of starting traits; prep buffs relax back toward these.
     val baseTraits: CandidateTraits? = null,
     // Issue stance left(-1) <-> right(+1), keyed by IssueId.serial.
-    val issuePositions: Map<String, Double> = emptyMap(),
+    val issuePositions: MutableMap<String, Double> = mutableMapOf(),
     // Baseline favorability per bloc (-1..+1), keyed by BlocId.serial.
     val baseFavorability: Map<String, Double> = emptyMap(),
 )
@@ -164,10 +177,11 @@ data class StateBloc(
     // Two-party support per ticket (sums to 1); N-party share under a
     // multiparty system, keyed by PartyId.
     val support: Map<String, Double>,
-    // Accumulated campaign margin shift (Biden - Trump).
-    val campaignMargin: Double,
+    // Accumulated campaign margin shift (Biden - Trump). var: the engine
+    // mutates blocs in place exactly like the TS engine does.
+    var campaignMargin: Double,
     // Enthusiasm multiplier on turnout, around 1.0.
-    val enthusiasm: Double,
+    var enthusiasm: Double,
     // ── Multiparty (UK): present only under an N-party system ──
     val appeal: Map<String, Double>? = null,
     val campaignAppeal: Map<String, Double>? = null,
@@ -185,9 +199,9 @@ data class StateContest(
     val mediaMarketCost: Double,
     val battleground: Boolean,
     val blocs: List<StateBloc>,
-    val groundGame: Map<String, Double>,
+    val groundGame: MutableMap<String, Double>,
     // Per-state momentum, -100..+100.
-    val momentum: Double,
+    var momentum: Double,
     // Aggregate units (ME-AL / NE-AL) carry no blocs.
     val aggregateOf: List<String>? = null,
     // ── Multiparty (UK) seat allocation ──
@@ -198,12 +212,12 @@ data class StateContest(
 )
 
 data class Resources(
-    val cash: Double,
-    val actions: Int,
+    var cash: Double,
+    var actions: Int,
     val maxActions: Int,
-    val staffCapacity: Int,
-    val nationalMomentum: Double,
-    val mediaNarrative: Double,
+    var staffCapacity: Int,
+    var nationalMomentum: Double,
+    var mediaNarrative: Double,
 )
 
 data class CampaignAction(
@@ -332,39 +346,40 @@ data class GameModifiers(
 )
 
 data class GameState(
-    val seed: Int,
-    val rngState: Int,
+    // Long: seeds and rng states are uint32 (may exceed Int.MAX).
+    val seed: Long,
+    var rngState: Long,
     // 0-based; 0 = first playable week.
-    val turn: Int,
+    var turn: Int,
     val totalTurns: Int,
     val granularity: String,
-    val phase: GamePhase,
+    var phase: GamePhase,
     val playerCandidate: CandidateId,
     val scenarioId: String? = null,
     val eventMode: EventMode? = null,
     // Difficulty handicap on the player's own campaigning (1.0 = no edge).
     val playerEdge: Double? = null,
-    val locations: Map<String, String>? = null,
     val candidates: Map<String, Candidate>,
     val issues: Map<String, Issue>,
     // Live national salience, starts from issue.baseSalience.
-    val salience: Map<String, Double>,
+    val salience: MutableMap<String, Double>,
     val states: List<StateContest>,
     val resources: Map<String, Resources>,
-    val pendingEvents: List<PendingEvent>,
-    val firedEventIds: List<String>,
+    var pendingEvents: MutableList<PendingEvent>,
+    val firedEventIds: MutableList<String>,
     // Actions queued this turn by the player (resolved on endTurn).
-    val queuedActions: List<CampaignAction>,
-    val causes: List<CauseEntry>,
-    val lastRecap: List<TurnRecapItem>,
+    var queuedActions: List<CampaignAction>,
+    val causes: MutableList<CauseEntry>,
+    var lastRecap: List<TurnRecapItem>,
     val runningMates: Map<String, String>? = null,
     val staff: Map<String, List<String>>? = null,
-    val adSpend: Map<String, Double>? = null,
-    val fundsRaised: Map<String, Double>? = null,
-    val debateHistory: List<DebateResult>? = null,
+    var locations: MutableMap<String, String>? = null,
+    var adSpend: MutableMap<String, Double>? = null,
+    var fundsRaised: MutableMap<String, Double>? = null,
+    val debateHistory: MutableList<DebateResult>? = null,
     val modifiers: GameModifiers? = null,
-    val timeline: List<TurnPoint>? = null,
-    val result: GameResult? = null,
+    var timeline: MutableList<TurnPoint>? = null,
+    var result: GameResult? = null,
 )
 
 data class DebateResult(
