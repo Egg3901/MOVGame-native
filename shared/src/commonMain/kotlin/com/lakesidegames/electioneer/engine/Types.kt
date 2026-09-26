@@ -376,7 +376,7 @@ data class GameState(
     var locations: MutableMap<String, String>? = null,
     var adSpend: MutableMap<String, Double>? = null,
     var fundsRaised: MutableMap<String, Double>? = null,
-    val debateHistory: MutableList<DebateResult>? = null,
+    var debateHistory: MutableList<DebateResult>? = null,
     val modifiers: GameModifiers? = null,
     var timeline: MutableList<TurnPoint>? = null,
     var result: GameResult? = null,
