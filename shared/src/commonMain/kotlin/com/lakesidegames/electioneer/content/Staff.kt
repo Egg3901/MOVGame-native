@@ -28,60 +28,6 @@ data class StaffDef(
     val effects: StaffEffectsDef,
 )
 
-val STAFF_POOL: List<StaffDef> = listOf(
-    StaffDef(
-        "field_director", "Ray Ortega", "Field Director",
-        "A machine of clipboards and county maps. One more thing gets done every single week.",
-        400_000.0, 55.0, StaffEffectsDef(maxActions = 1),
-    ),
-    StaffDef(
-        "media_guru", "Dana Whitfield", "Media Strategist",
-        "Cut her teeth on Super Bowl spots. Your ad dollars simply buy more.",
-        550_000.0, 60.0, StaffEffectsDef(adMult = 1.12),
-    ),
-    StaffDef(
-        "finance_chair", "Marcus Boone", "Finance Chair",
-        "Knows every bundler from Palo Alto to Palm Beach. Fundraisers close bigger.",
-        350_000.0, 50.0, StaffEffectsDef(fundraiseMult = 1.15),
-    ),
-    StaffDef(
-        "debate_coach", "Prof. Elena Vasquez", "Debate Coach",
-        "Drills you until the zingers are muscle memory. Sharper on stage, week one.",
-        300_000.0, 70.0,
-        StaffEffectsDef(
-            debatePrepBonus = 3.0,
-            traitBonuses = mapOf("debatePrep" to 6.0, "debatingSkill" to 4.0),
-        ),
-    ),
-    StaffDef(
-        "spin_doctor", "Tommy Callahan", "Rapid Response Director",
-        "Kills opposition hits before the second news cycle. Their dirt sticks less.",
-        450_000.0, 45.0, StaffEffectsDef(oppoShield = 0.15),
-    ),
-    StaffDef(
-        "pollster", "Dr. Ingrid Chen", "Chief Pollster",
-        "Her crosstabs read like prophecy. Your message lands closer to the mark.",
-        400_000.0, 65.0,
-        StaffEffectsDef(adMult = 1.05, traitBonuses = mapOf("policyKnowledge" to 4.0)),
-    ),
-    StaffDef(
-        "body_man", "Petey Sullivan", "Body Man",
-        "Coffee, briefings, and a sixth sense for when you need a nap. The candidate stays fresh.",
-        150_000.0, 90.0,
-        StaffEffectsDef(traitBonuses = mapOf("energy" to 6.0)),
-    ),
-    StaffDef(
-        "veteran_manager", "Claudia Marsh", "Campaign Manager",
-        "Three cycles, two upsets. Steadies the whole operation with a bit of everything.",
-        600_000.0, 55.0,
-        StaffEffectsDef(maxActions = 1, fundraiseMult = 1.05, adMult = 1.04),
-    ),
-)
-
-val STAFF_BY_ID: Map<String, StaffDef> = STAFF_POOL.associateBy { it.id }
-
-const val MAX_STAFF = 3
-
 @Serializable
 data class StaffEffects(
     val maxActions: Int = 0,
