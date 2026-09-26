@@ -124,6 +124,9 @@ val BLOCS: Map<BlocId, BlocArchetype> = listOf(
     ),
 ).associateBy { it.id }
 
+// Bloc ids in content order (TS: Object.keys(BLOCS)).
+val BLOC_IDS: List<BlocId> = BLOCS.keys.toList()
+
 // Logit helper (exported for the state-shift solver in setup).
 fun logit(p: Double): Double {
     val clamped = min(0.999, max(0.001, p))

@@ -26,7 +26,7 @@ val CANDIDATES: Map<CandidateId, Candidate> = mapOf(
             "taxes" to -0.3, "law_and_order" to -0.1, "abortion" to -0.5,
             "trade" to -0.05,
         ),
-        baseFavorability = mapOf(
+        baseFavorability = mutableMapOf(
             "black" to 0.35, "college_white" to 0.12,
             "suburban_women" to 0.18, "seniors" to 0.05,
         ),
@@ -48,7 +48,7 @@ val CANDIDATES: Map<CandidateId, Candidate> = mapOf(
             "taxes" to 0.55, "law_and_order" to 0.7, "abortion" to 0.5,
             "trade" to 0.45,
         ),
-        baseFavorability = mapOf(
+        baseFavorability = mutableMapOf(
             "noncollege_white" to 0.3, "seniors" to 0.08,
         ),
     ),

@@ -19,7 +19,7 @@ class EventsTest {
         id = id, name = id.serial, shortName = if (id == CandidateId.DEM) "Biden" else "Trump",
         party = if (id == CandidateId.DEM) Party.DEMOCRATIC else Party.REPUBLICAN,
         runningMate = "VP", color = "#000", traits = traits(),
-        issuePositions = mutableMapOf(), baseFavorability = emptyMap(),
+        issuePositions = mutableMapOf(), baseFavorability = mutableMapOf(),
     )
 
     private fun game(turn: Int, eventMode: EventMode? = null) = GameState(

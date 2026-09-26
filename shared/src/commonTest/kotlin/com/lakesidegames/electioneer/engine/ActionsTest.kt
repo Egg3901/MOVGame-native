@@ -34,7 +34,7 @@ class ActionsTest {
             "economy" to if (id == CandidateId.DEM) -0.2 else 0.4,
             "healthcare" to -0.1,
         ),
-        baseFavorability = emptyMap(),
+        baseFavorability = mutableMapOf(),
     )
 
     private fun bloc(id: BlocId, baseline: Double, size: Double = 1000.0) = StateBloc(

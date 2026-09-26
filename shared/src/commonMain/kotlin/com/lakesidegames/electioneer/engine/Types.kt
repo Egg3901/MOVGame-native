@@ -125,6 +125,18 @@ data class CandidateTraits(
     var debatingSkill: Double,
     var fundraisingProwess: Double,
 ) {
+    // String-indexed write for staff/VP trait bonuses (TS: traits[key] = ...).
+    operator fun set(name: String, value: Double) = when (name) {
+        "charisma" -> charisma = value
+        "energy" -> energy = value
+        "debatePrep" -> debatePrep = value
+        "intelligence" -> intelligence = value
+        "policyKnowledge" -> policyKnowledge = value
+        "debatingSkill" -> debatingSkill = value
+        "fundraisingProwess" -> fundraisingProwess = value
+        else -> Unit
+    }
+
     // String-indexed read for trait-gated event choices (TS: traits[trait]).
     operator fun get(name: String): Double = when (name) {
         "charisma" -> charisma
@@ -143,15 +155,15 @@ data class Candidate(
     val name: String,
     val shortName: String,
     val party: Party,
-    val runningMate: String,
+    var runningMate: String,
     val color: String,
     val traits: CandidateTraits,
     // Immutable snapshot of starting traits; prep buffs relax back toward these.
-    val baseTraits: CandidateTraits? = null,
+    var baseTraits: CandidateTraits? = null,
     // Issue stance left(-1) <-> right(+1), keyed by IssueId.serial.
     val issuePositions: MutableMap<String, Double> = mutableMapOf(),
     // Baseline favorability per bloc (-1..+1), keyed by BlocId.serial.
-    val baseFavorability: Map<String, Double> = emptyMap(),
+    val baseFavorability: MutableMap<String, Double> = mutableMapOf(),
 )
 
 data class RunningMate(
@@ -172,8 +184,9 @@ data class StateBloc(
     val size: Double,
     // 0..1 baseline turnout propensity.
     val turnoutPropensity: Double,
-    // Biden-minus-Trump baseline appeal margin (logit space).
-    val baselineMargin: Double,
+    // Biden-minus-Trump baseline appeal margin (logit space). var: the
+    // easy-mode environment shift tilts baselines at setup.
+    var baselineMargin: Double,
     // Two-party support per ticket (sums to 1); N-party share under a
     // multiparty system, keyed by PartyId.
     val support: Map<String, Double>,
