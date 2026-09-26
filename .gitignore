@@ -18,3 +18,10 @@
 *.aab
 *.ipa
 .DS_Store
+# KMP / Gradle (Phase 0 scaffold)
+local.properties
+.gradle/
+build/
+shared/build/
+androidApp/build/
+*.hprof
