@@ -4,6 +4,7 @@ import com.lakesidegames.electioneer.content.OPPONENT_OF
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.round
+import kotlinx.serialization.Serializable
 
 // Campaign score: the 0-1000 leaderboard number from the player's
 // perspective. Pure and shared by client and server. Port of
@@ -18,6 +19,7 @@ val DIFFICULTY_MULTIPLIER: Map<String, Double> = mapOf(
 fun clampScore(x: Double, lo: Double, hi: Double): Double = max(lo, min(hi, x))
 
 // The facts a finished game reduces to for scoring.
+@Serializable
 data class ScoreFacts(
     // Player's awardable units minus the outright-win threshold (may be negative).
     val unitMargin: Double,

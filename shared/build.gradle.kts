@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.android.library)
 }
 
@@ -22,7 +23,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // Intentionally dependency-free: the engine is pure Kotlin.
+            // kotlinx.serialization: contract JSON for Phase 2 content bundles.
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

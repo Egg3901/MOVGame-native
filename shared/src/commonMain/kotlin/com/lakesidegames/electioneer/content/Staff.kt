@@ -2,10 +2,12 @@ package com.lakesidegames.electioneer.content
 
 import com.lakesidegames.electioneer.engine.CandidateId
 import com.lakesidegames.electioneer.engine.GameState
+import kotlinx.serialization.Serializable
 
 // Campaign staff: hire up to 3 from a pool of 8 at setup. Each gives one
 // passive bonus; the in-flight multipliers are read by the engine via
 // staffEffects(). Port of src/content/staff.ts.
+@Serializable
 data class StaffEffectsDef(
     val maxActions: Int = 0,
     val adMult: Double = 1.0,
@@ -15,6 +17,7 @@ data class StaffEffectsDef(
     val traitBonuses: Map<String, Double> = emptyMap(),
 )
 
+@Serializable
 data class StaffDef(
     val id: String,
     val name: String,
@@ -79,6 +82,7 @@ val STAFF_BY_ID: Map<String, StaffDef> = STAFF_POOL.associateBy { it.id }
 
 const val MAX_STAFF = 3
 
+@Serializable
 data class StaffEffects(
     val maxActions: Int = 0,
     val adMult: Double = 1.0,

@@ -1,4 +1,6 @@
 package com.lakesidegames.electioneer.engine
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 // ─────────────────────────────────────────────────────────────────────────
 // Port of MOVGame `src/engine/types.ts` (+ the PartyId family from
@@ -21,6 +23,7 @@ package com.lakesidegames.electioneer.engine
 
 typealias PartyId = String
 
+@Serializable(with = IssueIdSerial::class)
 enum class IssueId(val serial: String) {
     ECONOMY("economy"),
     COVID_RESPONSE("covid_response"),
@@ -34,6 +37,7 @@ enum class IssueId(val serial: String) {
     TRADE("trade"),
 }
 
+@Serializable(with = BlocIdSerial::class)
 enum class BlocId(val serial: String) {
     // US set (Phase 0 contract).
     NONCOLLEGE_WHITE("noncollege_white"),
@@ -70,21 +74,25 @@ enum class BlocId(val serial: String) {
     }
 }
 
+@Serializable(with = CandidateIdSerial::class)
 enum class CandidateId(val serial: String) {
     DEM("dem"),
     REP("rep"),
 }
 
+@Serializable(with = EventModeSerial::class)
 enum class EventMode(val serial: String) {
     HISTORICAL("historical"),
     PLAUSIBLE("plausible"),
 }
 
+@Serializable(with = PartySerial::class)
 enum class Party(val serial: String) {
     DEMOCRATIC("Democratic"),
     REPUBLICAN("Republican"),
 }
 
+@Serializable(with = RegionSerial::class)
 enum class Region(val serial: String) {
     NORTHEAST("Northeast"),
     SOUTH("South"),
@@ -93,6 +101,7 @@ enum class Region(val serial: String) {
     SWING("Swing"),
 }
 
+@Serializable(with = GamePhaseSerial::class)
 enum class GamePhase(val serial: String) {
     SETUP("setup"),
     INTEL("intel"),
@@ -101,6 +110,7 @@ enum class GamePhase(val serial: String) {
     RESULT("result"),
 }
 
+@Serializable(with = ActionTypeSerial::class)
 enum class ActionType(val serial: String) {
     ADVERTISE("advertise"),
     RALLY("rally"),
@@ -114,12 +124,14 @@ enum class ActionType(val serial: String) {
     ISSUE_PIVOT("issue_pivot"),
 }
 
+@Serializable(with = AdModeSerial::class)
 enum class AdMode(val serial: String) {
     POSITIVE("positive"),
     CONTRAST("contrast"),
     ISSUE("issue"),
 }
 
+@Serializable(with = PartyScopeSerial::class)
 enum class PartyScope(val serial: String) {
     NATIONAL("national"),
     SCOTLAND("scotland"),
@@ -127,11 +139,13 @@ enum class PartyScope(val serial: String) {
     NORTHERN_IRELAND("northern_ireland"),
 }
 
+@Serializable(with = AllocationStrategyIdSerial::class)
 enum class AllocationStrategyId(val serial: String) {
     WINNER_TAKE_ALL_EV("winner_take_all_ev"),
     REGIONAL_SEATS_CURVE("regional_seats_curve"),
 }
 
+@Serializable
 data class Issue(
     val id: IssueId,
     val name: String,
@@ -141,6 +155,7 @@ data class Issue(
 )
 
 // All var: debate/policy prep raise these, turn decay relaxes them back.
+@Serializable
 data class CandidateTraits(
     var charisma: Double,
     var energy: Double,
@@ -175,6 +190,7 @@ data class CandidateTraits(
     }
 }
 
+@Serializable
 data class Candidate(
     val id: CandidateId,
     val name: String,
@@ -191,6 +207,7 @@ data class Candidate(
     val baseFavorability: MutableMap<String, Double> = mutableMapOf(),
 )
 
+@Serializable
 data class RunningMate(
     val id: String,
     val name: String,
@@ -204,6 +221,7 @@ data class RunningMate(
     val candidateDayBonus: Double? = null,
 )
 
+@Serializable
 data class StateBloc(
     val blocId: BlocId,
     val size: Double,
@@ -225,6 +243,7 @@ data class StateBloc(
     var campaignAppeal: MutableMap<String, Double>? = null,
 )
 
+@Serializable
 data class StateContest(
     val id: String,
     val name: String,
@@ -249,6 +268,7 @@ data class StateContest(
     val seatElasticity: Double? = null,
 )
 
+@Serializable
 data class Resources(
     var cash: Double,
     var actions: Int,
@@ -258,6 +278,7 @@ data class Resources(
     var mediaNarrative: Double,
 )
 
+@Serializable
 data class CampaignAction(
     val type: ActionType,
     val candidate: CandidateId,
@@ -273,6 +294,7 @@ data class CampaignAction(
     val newPosition: Double? = null,
 )
 
+@Serializable
 data class BlocDelta(
     val blocId: BlocId,
     // Direct shift to campaignMargin for this bloc, nationwide.
@@ -280,6 +302,7 @@ data class BlocDelta(
     val enthusiasm: Double? = null,
 )
 
+@Serializable
 data class EventEffect(
     val blocDeltas: List<BlocDelta>? = null,
     val salienceDeltas: Map<String, Double>? = null,
@@ -294,11 +317,13 @@ data class EventEffect(
 )
 
 // Gate on a candidate trait threshold (TS: { trait?: keyof CandidateTraits }).
+@Serializable
 data class TraitRequirement(
     val trait: String? = null,
     val min: Double? = null,
 )
 
+@Serializable
 data class EventChoice(
     val id: String,
     val text: String,
@@ -309,13 +334,19 @@ data class EventChoice(
     val resultText: String,
 )
 
+@Serializable
 sealed class EventTrigger {
     // Fires on a specific turn.
+    @Serializable
+    @SerialName("scheduled")
     data class Scheduled(val turn: Int) : EventTrigger()
     // Drawn from the random pool.
+    @Serializable
+    @SerialName("stochastic")
     data class Stochastic(val baseWeight: Double) : EventTrigger()
 }
 
+@Serializable
 data class GameEvent(
     val id: String,
     val title: String,
@@ -330,17 +361,20 @@ data class GameEvent(
     val oncePerGame: Boolean = false,
 )
 
+@Serializable
 data class EventGate(
     val minTurn: Int? = null,
     val maxTurn: Int? = null,
     val requiresLowStamina: Boolean = false,
 )
 
+@Serializable
 data class PendingEvent(
     val eventId: String,
     val forCandidate: CandidateId,
 )
 
+@Serializable
 data class CauseEntry(
     val turn: Int,
     val stateId: String? = null,
@@ -351,6 +385,7 @@ data class CauseEntry(
     val marginDelta: Double,
 )
 
+@Serializable
 data class TurnRecapItem(
     val label: String,
     val detail: String,
@@ -358,6 +393,7 @@ data class TurnRecapItem(
     val stateId: String? = null,
 )
 
+@Serializable
 data class TurnPoint(
     // 0 = opening baseline, then 1..totalTurns.
     val turn: Int,
@@ -374,6 +410,7 @@ data class TurnPoint(
     val demShareByState: Map<String, Double> = emptyMap(),
 )
 
+@Serializable
 data class GameModifiers(
     // Flip this contest's prior to a pure tossup.
     val whatIfState: String? = null,
@@ -383,6 +420,7 @@ data class GameModifiers(
     val pandemic: Boolean = false,
 )
 
+@Serializable
 data class GameState(
     // Long: seeds and rng states are uint32 (may exceed Int.MAX).
     val seed: Long,
@@ -420,6 +458,7 @@ data class GameState(
     var result: GameResult? = null,
 )
 
+@Serializable
 data class DebateResult(
     val eventId: String,
     val title: String,
@@ -434,6 +473,7 @@ data class DebateResult(
     val momentumSwing: Double,
 )
 
+@Serializable
 data class StateResult(
     val stateId: String,
     val electoralVotes: Int,
@@ -445,6 +485,7 @@ data class StateResult(
 )
 
 // One region's seat split under the regional seats curve.
+@Serializable
 data class SeatResult(
     val contestId: String,
     val name: String,
@@ -456,14 +497,26 @@ data class SeatResult(
 )
 
 // Who can form a government after the seats fall.
+@Serializable
 sealed class Government {
+    @Serializable
+    @SerialName("majority")
     data class Majority(val party: PartyId, val seats: Int) : Government()
+    @Serializable
+    @SerialName("minority")
     data class Minority(val party: PartyId, val seats: Int) : Government()
+    @Serializable
+    @SerialName("coalition")
     data class Coalition(val parties: List<PartyId>, val seats: Int) : Government()
+    @Serializable
+    @SerialName("confidence_supply")
     data class ConfidenceSupply(val lead: PartyId, val partner: PartyId, val seats: Int) : Government()
+    @Serializable
+    @SerialName("hung")
     data class Hung(val largest: PartyId) : Government()
 }
 
+@Serializable
 data class GameResult(
     val electoralVotes: Map<String, Int>,
     // CandidateId.serial or "tie".
@@ -486,6 +539,7 @@ data class GameResult(
 
 // ── Political system (from src/engine/system.ts) ─────────────────────────
 
+@Serializable
 data class PartyDef(
     val id: PartyId,
     val name: String,
@@ -494,6 +548,7 @@ data class PartyDef(
     val scope: PartyScope = PartyScope.NATIONAL,
 )
 
+@Serializable
 data class AllocationStrategy(
     val id: AllocationStrategyId,
     val label: String,
@@ -501,6 +556,7 @@ data class AllocationStrategy(
     val unit: String,
 )
 
+@Serializable
 data class MajorityRule(
     // Total awardable units (538 EV, 650 seats).
     val total: Int,
@@ -510,6 +566,7 @@ data class MajorityRule(
     val effectiveThreshold: Int? = null,
 )
 
+@Serializable
 data class PoliticalSystem(
     val id: String,
     val label: String,

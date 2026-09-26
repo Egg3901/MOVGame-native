@@ -3,8 +3,10 @@ package com.lakesidegames.electioneer.content
 import com.lakesidegames.electioneer.engine.CandidateTraits
 import com.lakesidegames.electioneer.engine.Party
 import com.lakesidegames.electioneer.engine.Region
+import kotlinx.serialization.Serializable
 
 // Setup content descriptors (mirrors content/states.ts + content/scenarios.ts).
+@Serializable
 data class StateSeed(
     val id: String,
     val name: String,
@@ -22,6 +24,7 @@ data class StateSeed(
     val aggregateOf: List<String>? = null,
 )
 
+@Serializable
 data class ScenarioTicket(
     val name: String,
     val shortName: String,
@@ -33,6 +36,7 @@ data class ScenarioTicket(
     val runningMates: List<com.lakesidegames.electioneer.engine.RunningMate>,
 )
 
+@Serializable
 data class Scenario(
     val id: String,
     val year: Int,

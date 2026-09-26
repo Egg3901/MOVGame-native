@@ -9,6 +9,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
+import kotlinx.serialization.Serializable
 
 // AI planner: target ranking and weekly action plans. Port of src/engine/ai.ts.
 // Issue iteration uses IssueId.entries, which matches the TS ISSUE_IDS order.
@@ -46,6 +47,7 @@ private fun bestIssueForAi(game: GameState, ai: CandidateId): IssueId? {
     return best
 }
 
+@Serializable
 data class AiConfig(
     // 0..1 budget-efficiency multiplier; higher = spends more, smarter.
     val efficiency: Double,
@@ -74,6 +76,7 @@ fun competitiveBand(evMargin: Int): Double {
     return 0.055
 }
 
+@Serializable
 data class Target(
     val stateId: String,
     val ev: Int,

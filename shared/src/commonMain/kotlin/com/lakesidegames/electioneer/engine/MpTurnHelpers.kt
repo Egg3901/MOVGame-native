@@ -1,8 +1,10 @@
 package com.lakesidegames.electioneer.engine
+import kotlinx.serialization.Serializable
 
 // Shared helpers for the UK and country turn loops. Port of
 // src/engine/mpTurnHelpers.ts. The US advanceTurn path is untouched.
 
+@Serializable
 data class RecapItem(
     val label: String,
     val detail: String,
@@ -47,6 +49,7 @@ fun buildCauseRecap(
     return recap.take(limit)
 }
 
+@Serializable
 data class PendingGateResult<T>(val blocked: Boolean, val game: T)
 
 // Pending player-choice gate shared by UK/country: autoResolve picks the

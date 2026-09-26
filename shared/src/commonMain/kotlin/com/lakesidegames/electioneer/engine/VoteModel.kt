@@ -2,12 +2,14 @@ package com.lakesidegames.electioneer.engine
 
 import kotlin.math.abs
 import kotlin.math.exp
+import kotlinx.serialization.Serializable
 
 // Logistic sigmoid. Owned by setup.ts in TS; duplicated here as internal so
 // voteModel ports without pulling the whole lifecycle module (setup.ts will
 // re-export this when it lands).
 internal fun sigmoid(x: Double): Double = 1.0 / (1.0 + exp(-x))
 
+@Serializable
 data class ContestTally(
     val stateId: String,
     val demVotes: Double,
@@ -131,6 +133,7 @@ fun computeResult(game: GameState): GameResult {
     )
 }
 
+@Serializable
 data class ContestProjection(
     val stateId: String,
     val demShare: Double,
@@ -139,6 +142,7 @@ data class ContestProjection(
     val ev: Int,
 )
 
+@Serializable
 data class Projection(
     val ev: Map<String, Int>,
     val tossupEv: Int,

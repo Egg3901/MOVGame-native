@@ -3,10 +3,12 @@ package com.lakesidegames.electioneer.engine
 import kotlin.math.max
 import kotlin.math.round
 import kotlin.math.sqrt
+import kotlinx.serialization.Serializable
 
 // Noisy multiparty polls: a blurred view of true regional vote shares.
 // Port of src/engine/multipartyPolls.ts.
 
+@Serializable
 data class MpPollster(
     val name: String,
     // Additive bias toward the largest party.
@@ -21,6 +23,7 @@ val DEFAULT_MP_POLLSTERS: List<MpPollster> = listOf(
     MpPollster("Opinium", -0.005, 1400),
 )
 
+@Serializable
 data class MpRegionPoll(
     val regionId: String,
     val pollster: String,
@@ -29,6 +32,7 @@ data class MpRegionPoll(
     val marginOfError: Double,
 )
 
+@Serializable
 data class MpNationalPoll(
     val pollster: String,
     val shareByParty: Map<PartyId, Double>,

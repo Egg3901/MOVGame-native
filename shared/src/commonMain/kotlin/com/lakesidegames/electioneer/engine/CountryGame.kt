@@ -5,11 +5,13 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.round
 import kotlin.math.sqrt
+import kotlinx.serialization.Serializable
 
 // Country game facades over the core multiparty engine (Canada, Germany,
 // France, Australia). Port of src/engine/countryGame.ts. Pure +
 // deterministic: same seed ⇒ same game.
 
+@Serializable
 data class CountryResources(
     // Millions, in the country's currency.
     var funds: Double,
@@ -18,6 +20,7 @@ data class CountryResources(
     override var momentum: Double,
 ) : MpResources
 
+@Serializable(with = CountryActionTypeSerial::class)
 enum class CountryActionType(val serial: String) {
     BROADCAST("broadcast"),
     RALLY("rally"),
@@ -32,12 +35,14 @@ enum class CountryActionType(val serial: String) {
     ISSUE_PIVOT("issue_pivot"),
 }
 
+@Serializable(with = CountryAdModeSerial::class)
 enum class CountryAdMode(val serial: String) {
     POSITIVE("positive"),
     CONTRAST("contrast"),
     ISSUE("issue"),
 }
 
+@Serializable
 data class CountryAction(
     val type: CountryActionType,
     val party: PartyId,
@@ -49,6 +54,7 @@ data class CountryAction(
     val day: Int? = null,
 )
 
+@Serializable
 data class CountryResult(
     val seats: Map<PartyId, Int>,
     val voteShare: Map<PartyId, Double>,
@@ -59,11 +65,13 @@ data class CountryResult(
     val postMortem: List<CauseEntry>,
 )
 
+@Serializable
 data class CountryPendingEvent(
     val eventId: String,
     val targetParty: PartyId,
 )
 
+@Serializable
 data class CountryGameState(
     val countryId: String,
     val seed: Long,
@@ -142,6 +150,7 @@ private fun leaderForCountry(
     )
 }
 
+@Serializable
 data class CountryHandicap(
     val funds: Double,
     val actions: Int,
@@ -613,6 +622,7 @@ private fun CountryGameState.deepCopyCountry(): CountryGameState = copy(
     lastRecap = lastRecap.map { it.copy() },
 )
 
+@Serializable
 data class CountryAdvanceOptions(
     // Calibration anchor: neutral play reproduces history.
     val disableAi: Boolean = false,

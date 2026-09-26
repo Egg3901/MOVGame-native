@@ -2,12 +2,14 @@ package com.lakesidegames.electioneer.engine
 
 import com.lakesidegames.electioneer.content.OPPONENT_OF
 import kotlin.math.floor
+import kotlinx.serialization.Serializable
 
 // Achievements: checked once, at game end, against the finished GameState +
 // GameResult. Pure predicates over recorded facts. Port of
 // src/engine/achievements.ts (browser localStorage persistence is a platform
 // shell concern and is not ported).
 
+@Serializable
 data class AchievementContext(
     val result: GameResult,
     val game: GameState,
@@ -15,6 +17,7 @@ data class AchievementContext(
     val difficulty: String,
 )
 
+@Serializable
 data class Achievement(
     val id: String,
     val name: String,

@@ -4,11 +4,13 @@ import kotlin.math.min
 import kotlin.math.max
 import kotlin.math.round
 import kotlin.math.sqrt
+import kotlinx.serialization.Serializable
 
 // Polls shown to the player are a blurred view of the true model: true share
 // + sampling noise + a per-pollster house effect. Deterministic for a given
 // (game seed, turn, state, pollster) so the UI doesn't reshuffle every render.
 // Port of src/engine/polls.ts.
+@Serializable
 data class Poll(
     val stateId: String,
     val pollster: String,

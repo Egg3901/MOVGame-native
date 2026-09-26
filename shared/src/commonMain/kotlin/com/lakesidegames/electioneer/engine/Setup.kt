@@ -15,6 +15,7 @@ import com.lakesidegames.electioneer.content.resolveRunningMate
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
+import kotlinx.serialization.Serializable
 
 // Game setup: state solver, candidates, resources, scenarios. Port of
 // src/engine/setup.ts. sigmoid lives in VoteModel.kt (same package).
@@ -107,6 +108,7 @@ fun buildStates(
 }
 
 // Player-side handicap by difficulty.
+@Serializable
 data class PlayerHandicap(
     val actions: Int,
     val cash: Double,

@@ -2,10 +2,12 @@ package com.lakesidegames.electioneer.engine
 
 import kotlin.math.abs
 import kotlin.math.max
+import kotlinx.serialization.Serializable
 
 // Shared multiparty AI for the UK and country engines. Port of
 // src/engine/multipartyAi.ts.
 
+@Serializable
 data class MpAiConfig(
     // 0..1 budget-efficiency: higher = spends more, smarter target mix.
     val efficiency: Double,
@@ -22,6 +24,7 @@ val MP_DIFFICULTY: Map<String, MpAiConfig> = mapOf(
 )
 
 // Action verbs shared by UkAction / CountryAction (and the gauntlet bots).
+@Serializable
 data class MpActionLike(
     val type: String,
     val party: PartyId,
@@ -43,6 +46,7 @@ data class MpView(
     val compatible: ((lead: PartyId, partner: PartyId) -> Boolean)? = null,
 )
 
+@Serializable
 data class MpTarget(
     val region: StateContest,
     val margin: Double,

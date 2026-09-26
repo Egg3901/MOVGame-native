@@ -8,6 +8,7 @@
 # host SDK gains API 37: then take the latest BOM + compileSdk 37.
 [versions]
 kotlin = "2.2.21"
+serialization = "1.8.1"
 agp = "8.13.2"
 composeBom = "2025.08.00"
 activityCompose = "1.13.0"
@@ -15,6 +16,7 @@ compileSdk = "36"
 minSdk = "26"
 
 [libraries]
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
@@ -23,6 +25,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }

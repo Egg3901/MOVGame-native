@@ -4,12 +4,14 @@ import com.lakesidegames.electioneer.engine.Government
 import com.lakesidegames.electioneer.engine.PartyId
 import com.lakesidegames.electioneer.engine.PartyDef
 import com.lakesidegames.electioneer.engine.PoliticalSystem
+import kotlinx.serialization.Serializable
 
 // UK + country content descriptors (mirrors content/uk/* and
 // content/countries/*). Data tables are generated; functions are hand ports.
 
 // ── UK ─────────────────────────────────────────────────────────────────────
 
+@Serializable
 data class UkLeader(
     val partyId: PartyId,
     val name: String,
@@ -19,6 +21,7 @@ data class UkLeader(
     val machine: Double,
 )
 
+@Serializable
 data class UkEventChoice(
     val id: String,
     val text: String,
@@ -28,6 +31,7 @@ data class UkEventChoice(
     val rivalAppeal: Double? = null,
 )
 
+@Serializable
 data class UkEvent(
     val id: String,
     // {party} is substituted with the target party's short name.
@@ -44,16 +48,19 @@ data class UkEvent(
     val choices: List<UkEventChoice>? = null,
 )
 
+@Serializable
 data class UkMajority(
     val total: Int,
     val threshold: Int,
 )
 
+@Serializable
 data class RegionResult(
     val v: Map<String, Double>,
     val s: Map<String, Int>,
 )
 
+@Serializable
 data class UkElectionData(
     val id: String,
     val year: Int,
@@ -65,6 +72,7 @@ data class UkElectionData(
     val goalText: String? = null,
 )
 
+@Serializable
 data class UkRegionMeta(
     val id: String,
     val name: String,
@@ -77,6 +85,7 @@ data class UkRegionMeta(
     val profile: Map<String, Double>? = null,
 )
 
+@Serializable
 data class UkBlocDef(
     val id: String,
     val name: String,
@@ -85,6 +94,7 @@ data class UkBlocDef(
     val tilt: Map<String, Double>,
 )
 
+@Serializable
 data class UkIssue(
     val id: String,
     val name: String,
@@ -94,12 +104,14 @@ data class UkIssue(
 
 // ── Countries ──────────────────────────────────────────────────────────────
 
+@Serializable
 data class CountryIssueDef(
     val id: String,
     val name: String,
     val blurb: String,
 )
 
+@Serializable
 data class CountryBlocDef(
     val id: String,
     val name: String,
@@ -110,6 +122,7 @@ data class CountryBlocDef(
     val tilt: Map<String, Double>,
 )
 
+@Serializable
 data class CountryRegionMeta(
     val id: String,
     val name: String,
@@ -122,6 +135,7 @@ data class CountryRegionMeta(
     val seatElasticity: Double? = null,
 )
 
+@Serializable
 data class CountryElectionData(
     val id: String,
     val year: Int,
@@ -133,6 +147,7 @@ data class CountryElectionData(
     val events: List<CountryEventDef> = emptyList(),
 )
 
+@Serializable
 data class CountryLeader(
     val partyId: PartyId,
     val name: String,
@@ -142,6 +157,7 @@ data class CountryLeader(
     val machine: Double,
 )
 
+@Serializable
 data class CountryEventChoice(
     val id: String,
     val text: String,
@@ -151,6 +167,7 @@ data class CountryEventChoice(
     val rivalAppeal: Double? = null,
 )
 
+@Serializable
 data class CountryEventDef(
     val id: String,
     val headline: String,

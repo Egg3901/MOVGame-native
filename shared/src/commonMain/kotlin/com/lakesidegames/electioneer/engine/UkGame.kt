@@ -19,12 +19,14 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.round
 import kotlin.math.sqrt
+import kotlinx.serialization.Serializable
 
 // The UK game: state, setup, actions, turn loop, and result. Port of
 // src/engine/ukGame.ts. Pure + deterministic: same seed ⇒ same game.
 
 typealias Difficulty = String
 
+@Serializable
 data class UkResources(
     // £ millions on hand.
     var funds: Double,
@@ -33,6 +35,7 @@ data class UkResources(
     override var momentum: Double,
 ) : MpResources
 
+@Serializable(with = UkActionTypeSerial::class)
 enum class UkActionType(val serial: String) {
     BROADCAST("broadcast"),
     RALLY("rally"),
@@ -47,12 +50,14 @@ enum class UkActionType(val serial: String) {
     ISSUE_PIVOT("issue_pivot"),
 }
 
+@Serializable(with = UkAdModeSerial::class)
 enum class UkAdMode(val serial: String) {
     POSITIVE("positive"),
     CONTRAST("contrast"),
     ISSUE("issue"),
 }
 
+@Serializable
 data class UkAction(
     val type: UkActionType,
     val party: PartyId,
@@ -69,6 +74,7 @@ data class UkAction(
     val day: Int? = null,
 )
 
+@Serializable
 data class UkResult(
     val seats: Map<PartyId, Int>,
     val voteShare: Map<PartyId, Double>,
@@ -79,17 +85,20 @@ data class UkResult(
     val postMortem: List<CauseEntry>,
 )
 
+@Serializable
 data class UkPendingEvent(
     val eventId: String,
     // Resolved target party (always the player when pending).
     val targetParty: PartyId,
 )
 
+@Serializable
 data class NewsItem(
     val turn: Int,
     val text: String,
 )
 
+@Serializable
 data class UkGameState(
     val systemId: String = "UK",
     val seed: Long,
@@ -154,6 +163,7 @@ fun playablePartiesIn(electionId: String): List<PartyId> {
     return UK_PLAYABLE.filter { active.contains(it) }
 }
 
+@Serializable
 data class UkHandicap(
     val funds: Double,
     val actions: Int,
@@ -578,6 +588,7 @@ private fun UkGameState.deepCopyUk(): UkGameState = copy(
 )
 
 // ── Turn loop ──────────────────────────────────────────────────────────────
+@Serializable
 data class UkAdvanceOptions(
     // Suppress the AI parties (calibration anchor: neutral play reproduces history).
     val disableAi: Boolean = false,

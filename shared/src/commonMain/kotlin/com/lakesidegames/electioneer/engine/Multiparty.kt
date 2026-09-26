@@ -2,6 +2,7 @@ package com.lakesidegames.electioneer.engine
 
 import kotlin.math.floor
 import kotlin.math.max
+import kotlinx.serialization.Serializable
 
 // Multiparty vote model + regional seats curve (the UK engine path). Port of
 // src/engine/multiparty.ts. Pure + deterministic: no RNG.
@@ -32,6 +33,7 @@ fun blocPartyShares(bloc: StateBloc): Map<PartyId, Double> {
     return softmax(combined)
 }
 
+@Serializable
 data class RegionTally(
     val votesByParty: Map<PartyId, Double>,
     val totalVotes: Double,
@@ -114,6 +116,7 @@ fun allocateRegionSeats(
     return largestRemainder(raw, seats)
 }
 
+@Serializable
 data class SeatsResult(
     val seats: Map<PartyId, Int>,
     val voteShare: Map<PartyId, Double>,

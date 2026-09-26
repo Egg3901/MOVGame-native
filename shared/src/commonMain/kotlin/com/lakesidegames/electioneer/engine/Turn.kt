@@ -4,6 +4,7 @@ import com.lakesidegames.electioneer.content.CANDIDATES
 import com.lakesidegames.electioneer.content.EVENTS_BY_ID
 import com.lakesidegames.electioneer.content.OPPONENT_OF
 import kotlin.math.abs
+import kotlinx.serialization.Serializable
 
 // The weekly turn pipeline. Port of src/engine/turn.ts.
 
@@ -125,6 +126,7 @@ private fun buildRecap(game: GameState, turn: Int, evBefore: Int): List<TurnReca
     return recap.take(12)
 }
 
+@Serializable
 data class AdvanceOptions(
     val difficulty: AiConfig? = null,
     // If true, any player events left unanswered get a sensible default pick.

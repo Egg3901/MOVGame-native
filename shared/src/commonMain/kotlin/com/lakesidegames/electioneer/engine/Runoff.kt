@@ -1,6 +1,7 @@
 package com.lakesidegames.electioneer.engine
 
 import kotlin.math.max
+import kotlinx.serialization.Serializable
 
 // Two-round runoff (France and future two-round systems). Port of
 // src/engine/runoff.ts.
@@ -12,6 +13,7 @@ typealias RoundShares = Map<PartyId, Double>
 // finalist (and optionally "_abstain"). Rows should sum to <= 1.
 typealias TransferMatrix = Map<PartyId, Map<String, Double>>
 
+@Serializable
 data class RunoffResult(
     val finalists: Pair<PartyId, PartyId>,
     val eliminated: List<PartyId>,
