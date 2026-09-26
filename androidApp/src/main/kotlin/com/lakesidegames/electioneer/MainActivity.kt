@@ -3,48 +3,88 @@ package com.lakesidegames.electioneer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.lakesidegames.electioneer.engine.platformName
+import androidx.lifecycle.ViewModelProvider
+import com.lakesidegames.electioneer.ui.AccountScreen
+import com.lakesidegames.electioneer.ui.GameScreen
+import com.lakesidegames.electioneer.ui.GameSession
+import com.lakesidegames.electioneer.ui.ResultsScreen
+import com.lakesidegames.electioneer.ui.Screen
+import com.lakesidegames.electioneer.ui.SetupScreen
+import com.lakesidegames.electioneer.ui.StoreScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MarginOfVictoryApp() }
+        // Stock ViewModelProvider: no viewmodel-compose artifact needed.
+        val session = ViewModelProvider(this)[GameSession::class.java]
+        setContent { MarginOfVictoryApp(session) }
     }
 }
 
 @Composable
-fun MarginOfVictoryApp() {
+fun MarginOfVictoryApp(session: GameSession) {
+    val screen by session.screen.collectAsState()
     MaterialTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier.fillMaxSize().padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    text = "Margin of Victory",
-                    style = MaterialTheme.typography.headlineMedium,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Hello from ${platformName()} + shared KMP module.")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Engine port lands in Phase 1.",
-                    style = MaterialTheme.typography.bodySmall,
-                )
+        Surface {
+            Scaffold(
+                bottomBar = {
+                    NavigationBar {
+                        NavigationBarItem(
+                            selected = screen == Screen.SETUP ||
+                                screen == Screen.GAME ||
+                                screen == Screen.RESULTS,
+                            onClick = { session.go(Screen.SETUP) },
+                            icon = {
+                                Icon(Icons.Filled.PlayArrow, contentDescription = "Play")
+                            },
+                            label = { Text("Play") },
+                        )
+                        NavigationBarItem(
+                            selected = screen == Screen.STORE,
+                            onClick = { session.go(Screen.STORE) },
+                            icon = {
+                                Icon(Icons.Filled.ShoppingCart, contentDescription = "Store")
+                            },
+                            label = { Text("Store") },
+                        )
+                        NavigationBarItem(
+                            selected = screen == Screen.ACCOUNT,
+                            onClick = { session.go(Screen.ACCOUNT) },
+                            icon = {
+                                Icon(Icons.Filled.AccountCircle, contentDescription = "Account")
+                            },
+                            label = { Text("Account") },
+                        )
+                    }
+                },
+            ) { inner ->
+                val mod = Modifier.padding(inner)
+                Box(mod) {
+                    when (screen) {
+                        Screen.SETUP -> SetupScreen(session)
+                        Screen.GAME -> GameScreen(session)
+                        Screen.RESULTS -> ResultsScreen(session)
+                        Screen.STORE -> StoreScreen()
+                        Screen.ACCOUNT -> AccountScreen()
+                    }
+                }
             }
         }
     }
