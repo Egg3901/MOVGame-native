@@ -2,12 +2,42 @@ import SwiftUI
 
 // Phase 4 shells (#22): same copy contract as androidApp MiscScreens.
 struct StoreView: View {
+    @StateObject private var store = StoreKitAdapter()
+
     var body: some View {
-        shell(
-            title: "Store",
-            body: "Campaign funds and premium scenarios will be purchasable " +
-                "here. Billing connects in Phase 5; nothing is for sale yet."
-        )
+        if store.products.isEmpty {
+            shell(
+                title: "Store",
+                body: "Campaign funds and premium scenarios will be purchasable " +
+                    "here. Billing connects in Phase 5; nothing is for sale yet."
+            )
+        } else {
+            List {
+                if let notice = store.notice {
+                    Text(notice).font(.caption)
+                }
+                ForEach(store.products) { product in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(product.title).font(.headline)
+                            Text(store.owned.contains(product.packId) ? "Owned" : product.price)
+                                .font(.caption)
+                        }
+                        Spacer()
+                        if !store.owned.contains(product.packId) {
+                            Button("Buy") {
+                                Task { await store.purchase(packId: product.packId) }
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                Button("Restore purchases") {
+                    Task { await store.restore() }
+                }
+            }
+            .navigationTitle("Store")
+        }
     }
 }
 

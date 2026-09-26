@@ -3,6 +3,7 @@ package com.lakesidegames.electioneer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -34,12 +35,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         // Stock ViewModelProvider: no viewmodel-compose artifact needed.
         val session = ViewModelProvider(this)[GameSession::class.java]
-        setContent { MarginOfVictoryApp(session) }
+        session.attachBilling(applicationContext)
+        setContent { MarginOfVictoryApp(session, this) }
     }
 }
 
 @Composable
-fun MarginOfVictoryApp(session: GameSession) {
+fun MarginOfVictoryApp(session: GameSession, activity: Activity) {
     val screen by session.screen.collectAsState()
     MaterialTheme {
         Surface {
@@ -81,7 +83,7 @@ fun MarginOfVictoryApp(session: GameSession) {
                         Screen.SETUP -> SetupScreen(session)
                         Screen.GAME -> GameScreen(session)
                         Screen.RESULTS -> ResultsScreen(session)
-                        Screen.STORE -> StoreScreen()
+                        Screen.STORE -> StoreScreen(session, activity)
                         Screen.ACCOUNT -> AccountScreen()
                     }
                 }

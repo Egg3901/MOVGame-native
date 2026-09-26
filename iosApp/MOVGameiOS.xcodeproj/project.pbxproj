@@ -34,6 +34,7 @@
 				7A0000010000000000000020,
 				7A0000010000000000000021,
 				7A0000010000000000000022,
+				7A000001000000000000002B,
 				7A0000010000000000000003,
 			);
 			sourceTree = "<group>";
@@ -76,6 +77,7 @@
 				7A0000010000000000000026,
 				7A0000010000000000000027,
 				7A0000010000000000000028,
+				7A000001000000000000002C,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +212,16 @@
 			explicitFileType = wrapper.framework;
 			path = shared.framework;
 			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7A000001000000000000002B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = StoreKitAdapter.swift;
+			sourceTree = "<group>";
+		};
+		7A000001000000000000002C = {
+			isa = PBXBuildFile;
+			fileRef = 7A000001000000000000002B;
 		};
 		7A000001000000000000001D = {
 			isa = XCConfigurationList;

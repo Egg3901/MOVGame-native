@@ -17,6 +17,12 @@ android {
         targetSdk = libs.versions.compileSdk.get().toInt()
         versionCode = 1
         versionName = "0.1.0"
+        // Play Console public key for receipt verification (Phase 5, #8).
+        // Empty until Monetization setup exists; verification fails closed.
+        buildConfigField("String", "PLAY_PUBLIC_KEY", "\"\"")
+        // Sentry DSN for crash reporting (Phase 6, #24). Empty = disabled.
+        // Set via -PPROP or CI secret at release time; never commit a DSN.
+        buildConfigField("String", "SENTRY_DSN", "\"\"")
     }
 
     buildTypes {
@@ -26,6 +32,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -47,4 +54,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.icons.core)
+    implementation(libs.play.billing)
+    // Crash reporting (#24): inert until SENTRY_DSN is set at build time.
+    implementation(libs.sentry.android)
 }

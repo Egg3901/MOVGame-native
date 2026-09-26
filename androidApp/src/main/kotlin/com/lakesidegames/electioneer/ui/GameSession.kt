@@ -1,6 +1,11 @@
 package com.lakesidegames.electioneer.ui
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.lakesidegames.electioneer.BuildConfig
+import com.lakesidegames.electioneer.billing.PlayBilling
+import com.lakesidegames.electioneer.billing.StoreProduct
 import com.lakesidegames.electioneer.content.CANDIDATES
 import com.lakesidegames.electioneer.content.EVENTS_BY_ID
 import com.lakesidegames.electioneer.engine.ActionType
@@ -51,6 +56,35 @@ class GameSession : ViewModel() {
     // Turn recap lines, shown once after each End Turn.
     private val _recap = MutableStateFlow<List<String>?>(null)
     val recap: StateFlow<List<String>?> = _recap
+
+    // Store (Phase 5, #8): products, owned packs, and the last notice.
+    private var billing: PlayBilling? = null
+    private val _products = MutableStateFlow<List<StoreProduct>>(emptyList())
+    val products: StateFlow<List<StoreProduct>> = _products
+    private val _owned = MutableStateFlow<Set<String>>(emptySet())
+    val owned: StateFlow<Set<String>> = _owned
+    private val _storeNotice = MutableStateFlow<String?>(null)
+    val storeNotice: StateFlow<String?> = _storeNotice
+
+    fun attachBilling(context: Context) {
+        if (billing != null) return
+        val b = PlayBilling(context, BuildConfig.PLAY_PUBLIC_KEY)
+        billing = b
+        b.setOnChangeListener {
+            _owned.value = b.entitlements()
+            b.lastNotice?.let { _storeNotice.value = it }
+        }
+        _owned.value = b.entitlements()
+        b.listProducts { _products.value = it }
+    }
+
+    fun buy(activity: Activity, packId: String) {
+        billing?.purchase(activity, packId)
+    }
+
+    fun restorePurchases() {
+        billing?.restore { _owned.value = it }
+    }
 
     private var turnSeed: String = "1"
 
