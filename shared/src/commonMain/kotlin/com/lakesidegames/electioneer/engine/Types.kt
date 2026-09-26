@@ -35,6 +35,7 @@ enum class IssueId(val serial: String) {
 }
 
 enum class BlocId(val serial: String) {
+    // US set (Phase 0 contract).
     NONCOLLEGE_WHITE("noncollege_white"),
     COLLEGE_WHITE("college_white"),
     SUBURBAN_WOMEN("suburban_women"),
@@ -43,6 +44,30 @@ enum class BlocId(val serial: String) {
     ASIAN_OTHER("asian_other"),
     SENIORS("seniors"),
     YOUTH("youth"),
+    // UK set (TS casts these unsoundly; the port types them exactly).
+    YOUNG("young"),
+    GRADUATE("graduate"),
+    WORKINGCLASS("workingclass"),
+    HOMEOWNER("homeowner"),
+    RENTER("renter"),
+    PENSIONER("pensioner"),
+    // Country sets (shared ids reuse the UK members above).
+    YOUNG_RENTER("young_renter"),
+    MORTGAGE_BELT("mortgage_belt"),
+    REGIONAL("regional"),
+    SENIOR("senior"),
+    MULTICULTURAL("multicultural"),
+    WORKER("worker"),
+    FRANCOPHONE("francophone"),
+    URBAN_GRADUATE("urban_graduate"),
+    PERIURBAN_WORKER("periurban_worker"),
+    RURAL("rural"),
+    ;
+
+    companion object {
+        fun fromSerial(serial: String): BlocId =
+            entries.first { it.serial == serial }
+    }
 }
 
 enum class CandidateId(val serial: String) {
@@ -188,16 +213,16 @@ data class StateBloc(
     // easy-mode environment shift tilts baselines at setup.
     var baselineMargin: Double,
     // Two-party support per ticket (sums to 1); N-party share under a
-    // multiparty system, keyed by PartyId.
-    val support: Map<String, Double>,
+    // multiparty system, keyed by PartyId. var: decay/environment refresh it.
+    var support: Map<String, Double>,
     // Accumulated campaign margin shift (Biden - Trump). var: the engine
     // mutates blocs in place exactly like the TS engine does.
     var campaignMargin: Double,
     // Enthusiasm multiplier on turnout, around 1.0.
     var enthusiasm: Double,
     // ── Multiparty (UK): present only under an N-party system ──
-    val appeal: Map<String, Double>? = null,
-    val campaignAppeal: Map<String, Double>? = null,
+    val appeal: MutableMap<String, Double>? = null,
+    var campaignAppeal: MutableMap<String, Double>? = null,
 )
 
 data class StateContest(

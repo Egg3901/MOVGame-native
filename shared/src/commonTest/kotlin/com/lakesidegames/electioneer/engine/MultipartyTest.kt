@@ -17,7 +17,7 @@ class MultipartyTest {
         StateBloc(
             blocId = BlocId.NONCOLLEGE_WHITE, size = size, turnoutPropensity = 0.6,
             baselineMargin = 0.0, support = emptyMap(), campaignMargin = 0.0, enthusiasm = 1.0,
-            appeal = appeal, campaignAppeal = camp,
+            appeal = appeal.toMutableMap(), campaignAppeal = camp.toMutableMap(),
         )
 
     private fun region(

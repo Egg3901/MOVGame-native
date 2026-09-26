@@ -25,12 +25,13 @@ class TypesTest {
 
     @Test
     fun blocIdsCoverAllEightTsMembers() {
+        // Phase 0 contract: the US set leads; UK/country sets extend it.
         assertEquals(
             listOf(
                 "noncollege_white", "college_white", "suburban_women", "black",
                 "hispanic", "asian_other", "seniors", "youth",
             ),
-            BlocId.entries.map { it.serial },
+            BlocId.entries.take(8).map { it.serial },
         )
     }
 
