@@ -22,8 +22,15 @@ struct ContentView: View {
     @ViewBuilder
     private var playTab: some View {
         switch session.playScreen {
+        case .home:
+            HomeView(session: session)
         case .setup:
             SetupView(session: session)
+        case .loading:
+            VStack(spacing: 16) {
+                ProgressView().tint(.orange)
+                Text("Preparing the campaign trail…")
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
         case .game:
             GameView(session: session)
         case .results:
