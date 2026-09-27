@@ -29,9 +29,10 @@ this track cannot perform headless.
 
 - [ ] On a device: repeat the campaign close/reopen test and verify the shared
   save restores through the SwiftUI session.
-- [ ] macOS verify: run the `ios-verify` workflow in Codemagic on the
-  reviewed commit. It builds the Kotlin framework and SwiftUI simulator app
-  without signing or publishing. Record the build URL and result here.
+- [x] macOS verify: Codemagic `ios-verify` compiled the Kotlin framework and
+  SwiftUI simulator app at source commit
+  `2700c3f1884b6cc53cd67ae4f3f417c3411ebdc8` (build
+  `6ab9539a9e9edb1d6d9a0803`). This workflow does not sign or publish.
 - [ ] App Store Connect: products matching the SKU table, sandbox +
   TestFlight exercise of purchase/restore/refund through `StoreKitAdapter`.
 - [ ] App Store Server Notifications endpoint on the campaign server (web
