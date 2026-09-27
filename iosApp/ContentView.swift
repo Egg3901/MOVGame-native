@@ -17,6 +17,7 @@ struct ContentView: View {
                 .tabItem { Label("Account", systemImage: "person.crop.circle") }
                 .tag(2)
         }
+        .preferredColorScheme(.dark)
     }
 
     @ViewBuilder

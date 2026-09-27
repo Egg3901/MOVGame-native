@@ -62,6 +62,7 @@ fun SetupScreen(session: GameSession) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
+            TextButton(onClick = { session.go(Screen.HOME) }) { Text("← Campaign menu") }
             Text("NEW CAMPAIGN", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge)
             Text("Choose your path", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
             Text("Build the ticket. Assemble the team. Rewrite the map.", color = MaterialTheme.colorScheme.onSurfaceVariant)

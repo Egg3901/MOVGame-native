@@ -65,6 +65,8 @@ struct SetupView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
+                Button("← Campaign menu") { session.playScreen = .home }
+                    .font(.subheadline.bold()).foregroundStyle(CampaignStyle.muted)
                 Text("NEW CAMPAIGN").font(.caption.bold()).tracking(2).foregroundStyle(CampaignStyle.gold)
                 Text("Choose your path").font(.largeTitle.bold())
                 Text("Build the ticket. Assemble the team. Rewrite the map.").foregroundStyle(CampaignStyle.muted)
