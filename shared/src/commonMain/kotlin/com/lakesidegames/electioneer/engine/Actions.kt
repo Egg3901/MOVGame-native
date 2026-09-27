@@ -74,7 +74,7 @@ internal fun toFixed1(x: Double): String {
     return if (r == floor(r)) "${r.toLong()}.0" else r.toString()
 }
 
-private fun applyAdvertise(game: GameState, action: CampaignAction, rng: Rng, mult: Double = 1.0) {
+private fun applyAdvertise(game: GameState, action: CampaignAction, rng: Rng, mult: Double = 1.0, actionPower: Double = 1.0) {
     val state = findState(game, action.stateId) ?: return
     val c = action.candidate
     val spend = max(0.0, action.spend ?: 0.0)
@@ -93,7 +93,7 @@ private fun applyAdvertise(game: GameState, action: CampaignAction, rng: Rng, mu
     val fundraisingBoost = 0.85 + game.candidates.getValue(c.serial).traits.fundraisingProwess / 400
 
     if (mode == AdMode.ISSUE && action.issueId != null) {
-        val bump = min(0.12, effectiveMillions * 0.015)
+        val bump = min(0.12, effectiveMillions * 0.015) * actionPower
         val key = action.issueId.serial
         game.salience[key] = min(1.0, (game.salience[key] ?: 0.5) + bump)
         game.causes.add(
@@ -354,7 +354,7 @@ fun applyAction(game: GameState, action: CampaignAction, rng: Rng, actionPower: 
     // the AI and on hard); it scales persuasion only, not cash/infra/prep.
     val mult = (if (action.candidate == game.playerCandidate) (game.playerEdge ?: 1.0) else 1.0) * actionPower
     when (action.type) {
-        ActionType.ADVERTISE -> applyAdvertise(game, action, rng, mult)
+        ActionType.ADVERTISE -> applyAdvertise(game, action, rng, mult, actionPower)
         ActionType.RALLY -> applyRally(game, action, rng, mult)
         ActionType.SURROGATE -> applySurrogate(game, action, rng, mult)
         ActionType.FUNDRAISE -> applyFundraise(game, action, rng)
