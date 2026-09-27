@@ -11,7 +11,6 @@ import com.lakesidegames.electioneer.content.CANDIDATES
 import com.lakesidegames.electioneer.content.EVENTS_BY_ID
 import com.lakesidegames.electioneer.engine.ActionType
 import com.lakesidegames.electioneer.engine.AdvanceOptions
-import com.lakesidegames.electioneer.engine.CampaignAction
 import com.lakesidegames.electioneer.engine.CandidateId
 import com.lakesidegames.electioneer.engine.GamePhase
 import com.lakesidegames.electioneer.engine.GameState
@@ -42,8 +41,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// Phase 3: hand-rolled nav (5 screens; no navigation-compose dependency).
-// The session survives rotation via the platform ViewModel;Compose collects
+// Hand-rolled nav; the session survives rotation via the platform ViewModel. Compose collects
 // the StateFlows with stock collectAsState (no lifecycle-runtime-compose).
 enum class Screen { HOME, SETUP, LOADING, GAME, RESULTS, STORE, ACCOUNT }
 

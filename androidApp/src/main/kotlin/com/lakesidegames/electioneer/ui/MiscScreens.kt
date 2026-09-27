@@ -39,6 +39,7 @@ fun StoreScreen(session: GameSession, activity: Activity) {
         Shell(
             eyebrow = "CAMPAIGN LIBRARY",
             title = "History is yours to play",
+            feature = "17 campaigns included",
             body = "All 17 U.S. presidential campaigns are available in New Campaign today. There are no purchases in the app yet.",
         )
         return
@@ -85,12 +86,13 @@ fun AccountScreen() {
     Shell(
         eyebrow = "YOUR PROFILE",
         title = "The campaign stays with you",
+        feature = "Saved on this device",
         body = "Campaign progress is saved on this device. Sign in and cross-device sync are not available yet.",
     )
 }
 
 @Composable
-private fun Shell(eyebrow: String, title: String, body: String) {
+private fun Shell(eyebrow: String, title: String, feature: String, body: String) {
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -100,7 +102,7 @@ private fun Shell(eyebrow: String, title: String, body: String) {
         Text(title, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Black)
         Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp)) {
             Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(if (eyebrow == "CAMPAIGN LIBRARY") "17 campaigns included" else "Saved on this device", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(feature, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(body, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
             }
         }
