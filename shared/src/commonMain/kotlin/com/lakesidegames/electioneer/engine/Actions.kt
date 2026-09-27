@@ -343,7 +343,7 @@ private fun applyIssuePivot(game: GameState, action: CampaignAction, mult: Doubl
     }
 }
 
-fun applyAction(game: GameState, action: CampaignAction, rng: Rng) {
+fun applyAction(game: GameState, action: CampaignAction, rng: Rng, actionPower: Double = 1.0) {
     // Every action costs exactly one slot from the weekly pool. Out of slots:
     // the action can't run. Cash costs are charged on top inside the handlers.
     val res = game.resources.getValue(action.candidate.serial)
@@ -352,7 +352,7 @@ fun applyAction(game: GameState, action: CampaignAction, rng: Rng) {
     val firstNewCause = game.causes.size
     // The player's campaigning is amplified by the difficulty handicap (1.0 for
     // the AI and on hard); it scales persuasion only, not cash/infra/prep.
-    val mult = if (action.candidate == game.playerCandidate) (game.playerEdge ?: 1.0) else 1.0
+    val mult = (if (action.candidate == game.playerCandidate) (game.playerEdge ?: 1.0) else 1.0) * actionPower
     when (action.type) {
         ActionType.ADVERTISE -> applyAdvertise(game, action, rng, mult)
         ActionType.RALLY -> applyRally(game, action, rng, mult)
