@@ -15,6 +15,11 @@ class MobileGame private constructor(
     private val seedStr: String,
 ) {
     companion object {
+        fun restore(snapshot: String): MobileGame? {
+            val saved = loadGame(snapshot) ?: return null
+            return MobileGame(saved.state, saved.seed)
+        }
+
         fun newGame(playerSerial: String, difficulty: String, seed: Long): MobileGame {
             val player = CandidateId.entries.first { it.serial == playerSerial }
             val state = createGame(
@@ -33,6 +38,8 @@ class MobileGame private constructor(
     }
 
     fun playerSerial(): String = game.playerCandidate.serial
+
+    fun saveSnapshot(): String = saveGame(game, seedStr)
 
     fun turn(): Int = game.turn
 

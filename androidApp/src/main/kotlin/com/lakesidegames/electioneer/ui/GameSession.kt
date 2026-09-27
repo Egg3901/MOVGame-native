@@ -2,6 +2,7 @@ package com.lakesidegames.electioneer.ui
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import com.lakesidegames.electioneer.BuildConfig
 import com.lakesidegames.electioneer.billing.PlayBilling
@@ -22,6 +23,8 @@ import com.lakesidegames.electioneer.engine.choiceAvailable
 import com.lakesidegames.electioneer.engine.createGame
 import com.lakesidegames.electioneer.engine.projectElection
 import com.lakesidegames.electioneer.engine.resolveEvent
+import com.lakesidegames.electioneer.engine.loadGame
+import com.lakesidegames.electioneer.engine.saveGame
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -33,6 +36,26 @@ enum class Screen { SETUP, GAME, RESULTS, STORE, ACCOUNT }
 val DIFFICULTIES = listOf("easy", "normal", "hard")
 
 class GameSession : ViewModel() {
+    private var savePrefs: SharedPreferences? = null
+    private val saveKey = "campaign_v1"
+
+    fun attachStorage(context: Context) {
+        if (savePrefs != null) return
+        val prefs = context.applicationContext.getSharedPreferences("mov_native", Context.MODE_PRIVATE)
+        savePrefs = prefs
+        val saved = prefs.getString(saveKey, null)?.let(::loadGame) ?: return
+        turnSeed = saved.seed
+        _game.value = saved.state
+        _screen.value = if (saved.state.phase == GamePhase.RESULT) Screen.RESULTS else Screen.GAME
+        refresh()
+        promptNextEvent(saved.state)
+    }
+
+    private fun persist() {
+        val game = _game.value ?: return
+        savePrefs?.edit()?.putString(saveKey, saveGame(game, turnSeed))?.apply()
+    }
+
     private val _screen = MutableStateFlow(Screen.SETUP)
     val screen: StateFlow<Screen> = _screen
 
@@ -121,6 +144,7 @@ class GameSession : ViewModel() {
         _recap.value = null
         refresh()
         _screen.value = Screen.GAME
+        persist()
     }
 
     fun playAgain() {
@@ -136,6 +160,7 @@ class GameSession : ViewModel() {
         // engine mutates nested maps in place, exactly like the web game.
         _game.value = _game.value?.copy()
         refresh()
+        persist()
     }
 
     private fun refresh() {
@@ -170,6 +195,7 @@ class GameSession : ViewModel() {
         val next = advanceTurn(g, g.queuedActions, turnSeed, AdvanceOptions())
         _game.value = next
         refresh()
+        persist()
         if (next.phase == GamePhase.RESULT) {
             _screen.value = Screen.RESULTS
             return

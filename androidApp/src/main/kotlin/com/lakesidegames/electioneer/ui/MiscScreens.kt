@@ -35,8 +35,8 @@ fun StoreScreen(session: GameSession, activity: Activity) {
     if (products.isEmpty()) {
         Shell(
             title = "Store",
-            body = "Campaign funds and premium scenarios will be purchasable " +
-                "here. Billing connects in Phase 5; nothing is for sale yet.",
+            body = "Scenario packs will appear here after store setup. " +
+                "Nothing is for sale yet.",
         )
         return
     }
@@ -81,9 +81,8 @@ fun StoreScreen(session: GameSession, activity: Activity) {
 fun AccountScreen() {
     Shell(
         title = "Account",
-        body = "Sign in with your Margin of Victory account to sync " +
-            "campaigns across devices. Login connects after billing; " +
-            "campaigns stay on this device for now.",
+        body = "Campaign progress is saved on this device. Account sign in and " +
+            "cross-device sync are not available yet.",
     )
 }
 

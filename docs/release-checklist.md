@@ -6,6 +6,8 @@ this track cannot perform headless.
 
 ## Android (Play)
 
+- [ ] On a device: start a campaign, queue an action, close the app, reopen it,
+  finish a turn, and confirm the same campaign and event queue resume.
 - [ ] Play Console: create the app and first non-consumable products, then fill
   `SkuTable.entries` (`billing/SkuTable.kt`). Supply the license key as
   `MOV_PLAY_PUBLIC_KEY` through a build environment or Gradle property.
@@ -25,6 +27,8 @@ this track cannot perform headless.
 
 ## iOS (App Store)
 
+- [ ] On a device: repeat the campaign close/reopen test and verify the shared
+  save restores through the SwiftUI session.
 - [ ] macOS verify: `kmp.yml` iOS job green (blocked on billing; then
   proves the SwiftUI mirror + `embedAndSignAppleFrameworkForXcode`
   linkage compile).

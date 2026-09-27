@@ -45,9 +45,8 @@ struct AccountView: View {
     var body: some View {
         shell(
             title: "Account",
-            body: "Sign in with your Margin of Victory account to sync " +
-                "campaigns across devices. Login connects after billing; " +
-                "campaigns stay on this device for now."
+            body: "Campaign progress is saved on this device. Account sign in and " +
+                "cross-device sync are not available yet."
         )
     }
 }

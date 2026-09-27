@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         // Stock ViewModelProvider: no viewmodel-compose artifact needed.
         val session = ViewModelProvider(this)[GameSession::class.java]
+        session.attachStorage(applicationContext)
         session.attachBilling(applicationContext)
         setContent { MarginOfVictoryApp(session, this) }
     }

@@ -9,6 +9,7 @@ enum PlayScreen {
 }
 
 final class GameSession: ObservableObject {
+    private static let saveKey = "mov_campaign_v1"
     @Published var tab = 0 // 0 play, 1 store, 2 account
     @Published var playScreen: PlayScreen = .setup
     @Published var version = 0
@@ -19,6 +20,15 @@ final class GameSession: ObservableObject {
     @Published var eventResult: String? = nil
 
     private var game: MobileGame? = nil
+
+    init() {
+        if let snapshot = UserDefaults.standard.string(forKey: Self.saveKey),
+           let restored = MobileGame.restore(snapshot: snapshot) {
+            game = restored
+            playScreen = restored.isOver() ? .results : .game
+            eventId = restored.pendingEventIds().first
+        }
+    }
 
     var hasGame: Bool { game != nil }
 
@@ -33,7 +43,12 @@ final class GameSession: ObservableObject {
         tab = 0
     }
 
-    func touch() { version += 1 }
+    func touch() {
+        version += 1
+        if let game = game {
+            UserDefaults.standard.set(game.saveSnapshot(), forKey: Self.saveKey)
+        }
+    }
 
     func candidates() -> [Candidate] { MobileGame.candidates() }
 
