@@ -6,9 +6,9 @@ this track cannot perform headless.
 
 ## Android (Play)
 
-- [ ] Play Console: create the app, first non-consumable products, and fill
-  `SkuTable.entries` (`billing/SkuTable.kt`) plus `PLAY_PUBLIC_KEY`
-  (`androidApp/build.gradle.kts`; release signing config, never committed).
+- [ ] Play Console: create the app and first non-consumable products, then fill
+  `SkuTable.entries` (`billing/SkuTable.kt`). Supply the license key as
+  `MOV_PLAY_PUBLIC_KEY` through a build environment or Gradle property.
 - [ ] Sandbox: purchase → refund → restore → reinstall → offline refresh,
   per docs/billing.md. Refunds must drop the pack on the next
   `queryPurchases`; a stale cache entry past grace must not re-grant
@@ -19,7 +19,7 @@ this track cannot perform headless.
   + results), feature graphic, content rating questionnaire, privacy policy
   URL, data-safety form (no account, no ads SDK; Sentry crash reports only
   when a DSN is set).
-- [ ] Release build with `SENTRY_DSN` set; verify a test crash arrives in
+- [ ] Release build with `MOV_SENTRY_DSN` set; verify a test crash arrives in
   Sentry before promoting to production.
 - [ ] Attach gate evidence (gates 1-6 in README) to the Hub work item.
 

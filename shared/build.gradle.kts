@@ -4,8 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-// Shared KMP engine module. Phase 0: types contract only (commonMain/engine).
-// The Phase 1 engine port lands file-by-file in this module; see native-plan.md.
+// Shared KMP simulation and content used by the native Android and iOS UIs.
 kotlin {
     androidTarget {
         compilations.all {

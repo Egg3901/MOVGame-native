@@ -44,11 +44,11 @@ jobs:
         run: ./gradlew :shared:jvmTest :androidApp:assembleDebug --stacktrace
 
   ios:
-    name: iOS stub build
+    name: iOS native build
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build SwiftUI stub in the simulator SDK
+      - name: Build SwiftUI app in the simulator SDK
         run: >
           xcodebuild
           -project iosApp/MOVGameiOS.xcodeproj

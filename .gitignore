@@ -21,6 +21,7 @@
 # KMP / Gradle (Phase 0 scaffold)
 local.properties
 .gradle/
+.kotlin/
 build/
 shared/build/
 androidApp/build/

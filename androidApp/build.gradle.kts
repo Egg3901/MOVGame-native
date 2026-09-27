@@ -4,9 +4,16 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-// Phase 0 stub: a "Hello Margin of Victory" screen proving the app boots with
-// the shared KMP module on its classpath. Real screens (Setup/Game/Results/
-// Store/Account) are Phase 3 issues, not this module.
+fun String.asBuildConfigString(): String = "\"" + replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+
+val playPublicKey = providers.gradleProperty("MOV_PLAY_PUBLIC_KEY")
+    .orElse(providers.environmentVariable("MOV_PLAY_PUBLIC_KEY"))
+    .orElse("")
+val sentryDsn = providers.gradleProperty("MOV_SENTRY_DSN")
+    .orElse(providers.environmentVariable("MOV_SENTRY_DSN"))
+    .orElse("")
+
+// Native Android UI backed by the shared KMP simulation.
 android {
     namespace = "com.lakesidegames.electioneer"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -17,12 +24,9 @@ android {
         targetSdk = libs.versions.compileSdk.get().toInt()
         versionCode = 1
         versionName = "0.1.0"
-        // Play Console public key for receipt verification (Phase 5, #8).
-        // Empty until Monetization setup exists; verification fails closed.
-        buildConfigField("String", "PLAY_PUBLIC_KEY", "\"\"")
-        // Sentry DSN for crash reporting (Phase 6, #24). Empty = disabled.
-        // Set via -PPROP or CI secret at release time; never commit a DSN.
-        buildConfigField("String", "SENTRY_DSN", "\"\"")
+        // Empty until the store and crash reporting are configured.
+        buildConfigField("String", "PLAY_PUBLIC_KEY", playPublicKey.get().asBuildConfigString())
+        buildConfigField("String", "SENTRY_DSN", sentryDsn.get().asBuildConfigString())
     }
 
     buildTypes {
