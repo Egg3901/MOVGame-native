@@ -66,7 +66,7 @@ class MobileApiTest {
         assertEquals(17, campaigns.size)
         val mate = MobileGame.mates("1960", "rep").first()
         val staff = MobileGame.staffChoices().take(2).map { it.id }
-        val game = MobileGame.startConfiguredGame("1960", "rep", mate.id, staff, "hard", "plausible", 5, "ui-parity-test")
+        val game = MobileGame.startConfiguredGame("1960", "rep", mate.id, staff, "hard", "plausible", 5, "ui-parity-test", "PA", true, true)
         assertEquals("1960", game.campaignLabel().take(4))
         assertEquals(5, game.totalTurns())
         assertEquals("rep", game.playerSerial())

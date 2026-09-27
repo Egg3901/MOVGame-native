@@ -27,6 +27,7 @@ import com.lakesidegames.electioneer.engine.loadGame
 import com.lakesidegames.electioneer.engine.saveGame
 import com.lakesidegames.electioneer.engine.MobileGame
 import com.lakesidegames.electioneer.engine.EventMode
+import com.lakesidegames.electioneer.engine.GameModifiers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.CoroutineScope
@@ -131,7 +132,8 @@ class GameSession : ViewModel() {
     fun staffChoices() = MobileGame.staffChoices()
 
     fun hasSave() = _game.value != null
-    fun savedCampaignLabel(): String? = _game.value?.scenarioId?.let { id ->
+    fun savedCampaignLabel(): String? = _game.value?.let { game ->
+        val id = game.scenarioId ?: "2020"
         MobileGame.campaigns().firstOrNull { it.id == id }?.label
     }
 
@@ -152,16 +154,15 @@ class GameSession : ViewModel() {
         }
     }
 
-    fun newGame(scenarioId: String, player: CandidateId, mateId: String, staffIds: List<String>, difficulty: String, eventMode: EventMode, totalTurns: Int) {
+    fun newGame(scenarioId: String, player: CandidateId, mateId: String, staffIds: List<String>, difficulty: String, eventMode: EventMode, totalTurns: Int, seed: String, whatIfState: String, mirrorMatch: Boolean, pandemic: Boolean) {
         require(MobileGame.campaigns().any { it.id == scenarioId })
         require(MobileGame.mates(scenarioId, player.serial).any { it.id == mateId })
         require(staffIds.size <= 3 && staffIds.distinct().size == staffIds.size)
         require(staffIds.all { id -> MobileGame.staffChoices().any { it.id == id } })
         require(difficulty in DIFFICULTIES && totalTurns in listOf(5, 9, 14))
+        require(whatIfState in listOf("", "TX", "FL", "OH", "PA", "MI", "WI", "GA", "AZ", "NC", "NY"))
         _screen.value = Screen.LOADING
-        // androidApp may use the wall clock; common code stays clock-free.
-        turnSeed = System.currentTimeMillis().toString()
-        val seed = turnSeed
+        turnSeed = seed
         scope.launch {
         val g = withContext(Dispatchers.Default) { createGame(
             NewGameOptions(
@@ -173,6 +174,7 @@ class GameSession : ViewModel() {
                 staff = staffIds,
                 eventMode = eventMode,
                 totalTurns = totalTurns,
+                modifiers = GameModifiers(whatIfState.ifEmpty { null }, mirrorMatch, pandemic),
             ),
         ) }
         _game.value = g

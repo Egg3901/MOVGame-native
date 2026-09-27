@@ -57,14 +57,14 @@ final class GameSession: ObservableObject {
     func mates(scenarioId: String, playerSerial: String) -> [MateChoice] { MobileGame.companion.mates(scenarioId: scenarioId, playerSerial: playerSerial) }
     func staffChoices() -> [StaffChoice] { MobileGame.companion.staffChoices() }
 
-    func newGame(scenarioId: String, playerSerial: String, mateId: String, staffIds: [String], difficulty: String, eventMode: String, totalTurns: Int) {
-        let seed = String(Int64(Date().timeIntervalSince1970 * 1000))
+    func newGame(scenarioId: String, playerSerial: String, mateId: String, staffIds: [String], difficulty: String, eventMode: String, totalTurns: Int, seed: String, whatIfState: String, mirrorMatch: Bool, pandemic: Bool) {
         playScreen = .loading
         DispatchQueue.global(qos: .userInitiated).async {
             let started = MobileGame.companion.startConfiguredGame(
                 scenarioId: scenarioId, playerSerial: playerSerial, mateId: mateId,
                 staffIds: staffIds, difficulty: difficulty, eventModeSerial: eventMode,
-                totalTurns: Int32(totalTurns), seed: seed)
+                totalTurns: Int32(totalTurns), seed: seed, whatIfState: whatIfState,
+                mirrorMatch: mirrorMatch, pandemic: pandemic)
             DispatchQueue.main.async {
                 self.game = started
                 self.recapLines = []

@@ -59,7 +59,8 @@ class MobileGame private constructor(
         fun startConfiguredGame(
             scenarioId: String, playerSerial: String, mateId: String,
             staffIds: List<String>, difficulty: String, eventModeSerial: String,
-            totalTurns: Int, seed: String,
+            totalTurns: Int, seed: String, whatIfState: String,
+            mirrorMatch: Boolean, pandemic: Boolean,
         ): MobileGame {
             require(scenarioId in SCENARIOS)
             require(difficulty in difficulties())
@@ -67,12 +68,14 @@ class MobileGame private constructor(
             require(staffIds.size <= 3 && staffIds.distinct().size == staffIds.size)
             require(staffIds.all { id -> STAFF_POOL.any { it.id == id } })
             require(mates(scenarioId, playerSerial).any { it.id == mateId })
+            require(whatIfState in listOf("", "TX", "FL", "OH", "PA", "MI", "WI", "GA", "AZ", "NC", "NY"))
             val player = CandidateId.entries.first { it.serial == playerSerial }
             val eventMode = EventMode.entries.first { it.serial == eventModeSerial }
             val state = createGame(NewGameOptions(
                 seed = seed, playerCandidate = player, scenario = scenarioId,
                 runningMate = mateId, staff = staffIds, difficulty = difficulty,
                 eventMode = eventMode, totalTurns = totalTurns,
+                modifiers = GameModifiers(whatIfState = whatIfState.ifEmpty { null }, mirrorMatch = mirrorMatch, pandemic = pandemic),
             ))
             return MobileGame(state, seed)
         }
@@ -80,7 +83,7 @@ class MobileGame private constructor(
 
     fun playerSerial(): String = game.playerCandidate.serial
 
-    fun campaignLabel(): String = SCENARIOS[game.scenarioId]?.label ?: "Your campaign"
+    fun campaignLabel(): String = SCENARIOS[game.scenarioId ?: "2020"]?.label ?: "Your campaign"
 
     fun saveSnapshot(): String = saveGame(game, seedStr)
 

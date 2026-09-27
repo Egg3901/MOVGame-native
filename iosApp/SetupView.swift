@@ -45,13 +45,17 @@ struct HomeView: View {
 
 struct SetupView: View {
     @ObservedObject var session: GameSession
-    @State private var scenarioId = "2020"
+    @State private var scenarioId = "2024"
     @State private var player = "dem"
     @State private var mateId = ""
     @State private var staffIds: Set<String> = []
     @State private var difficulty = "normal"
     @State private var eventMode = "historical"
     @State private var totalTurns = 9
+    @State private var seed = String(format: "%06d", Int.random(in: 0...999999))
+    @State private var whatIfState = ""
+    @State private var mirrorMatch = false
+    @State private var pandemic = false
 
     private var campaigns: [CampaignChoice] { session.campaigns() }
     private var campaign: CampaignChoice { campaigns.first(where: { $0.id == scenarioId }) ?? campaigns[0] }
@@ -115,12 +119,26 @@ struct SetupView: View {
                         Text("9 weeks").tag(9)
                         Text("14 weeks").tag(14)
                     }.pickerStyle(.segmented)
+                    Picker("What if: make a state a tossup", selection: $whatIfState) {
+                        Text("Off").tag("")
+                        ForEach(["TX", "FL", "OH", "PA", "MI", "WI", "GA", "AZ", "NC", "NY"], id: \.self) {
+                            Text($0).tag($0)
+                        }
+                    }.tint(CampaignStyle.gold)
+                    Toggle("Mirror match · underdog boost", isOn: $mirrorMatch).tint(CampaignStyle.gold)
+                    Toggle("Pandemic era issues", isOn: $pandemic).tint(CampaignStyle.gold)
+                    TextField("Campaign seed", text: $seed)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .textFieldStyle(.roundedBorder)
+                    Text("Use the same seed to replay the same campaign").font(.caption).foregroundStyle(CampaignStyle.muted)
                 }
                 Button {
                     guard let mate = selectedMate else { return }
                     session.newGame(scenarioId: scenarioId, playerSerial: player, mateId: mate.id,
                                     staffIds: Array(staffIds).sorted(), difficulty: difficulty,
-                                    eventMode: eventMode, totalTurns: totalTurns)
+                                    eventMode: eventMode, totalTurns: totalTurns, seed: seed,
+                                    whatIfState: whatIfState, mirrorMatch: mirrorMatch, pandemic: pandemic)
                 } label: {
                     Text("Launch campaign  →").font(.headline).frame(maxWidth: .infinity).padding(18)
                 }

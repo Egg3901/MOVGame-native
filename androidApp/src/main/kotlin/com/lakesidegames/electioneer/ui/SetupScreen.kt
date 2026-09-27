@@ -41,13 +41,17 @@ fun HomeScreen(session: GameSession) {
 @Composable
 fun SetupScreen(session: GameSession) {
     val campaigns = remember { session.campaigns() }
-    var scenarioId by remember { mutableStateOf("2020") }
+    var scenarioId by remember { mutableStateOf("2024") }
     var player by remember { mutableStateOf(CandidateId.DEM) }
     var mateId by remember { mutableStateOf("") }
     var staffIds by remember { mutableStateOf(setOf<String>()) }
     var difficulty by remember { mutableStateOf("normal") }
     var mode by remember { mutableStateOf(EventMode.HISTORICAL) }
     var turns by remember { mutableIntStateOf(9) }
+    var seed by remember { mutableStateOf((System.currentTimeMillis() % 1_000_000).toString().padStart(6, '0')) }
+    var whatIfState by remember { mutableStateOf("") }
+    var mirrorMatch by remember { mutableStateOf(false) }
+    var pandemic by remember { mutableStateOf(false) }
     val campaign = campaigns.first { it.id == scenarioId }
     val mates = remember(scenarioId, player) { session.mates(scenarioId, player) }
     val selectedMate = mates.firstOrNull { it.id == mateId } ?: mates.firstOrNull { it.historical } ?: mates.first()
@@ -125,10 +129,25 @@ fun SetupScreen(session: GameSession) {
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     listOf(5, 9, 14).forEach { n -> FilterChip(selected = turns == n, onClick = { turns = n }, label = { Text("$n weeks") }) }
                 }
+                Text("What if: make one state a tossup", style = MaterialTheme.typography.labelMedium)
+                listOf("", "TX", "FL", "OH", "PA", "MI", "WI", "GA", "AZ", "NC", "NY").chunked(4).forEach { row ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        row.forEach { state -> FilterChip(selected = whatIfState == state, onClick = { whatIfState = state }, label = { Text(state.ifEmpty { "Off" }) }) }
+                    }
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("Mirror match · underdog boost")
+                    Switch(checked = mirrorMatch, onCheckedChange = { mirrorMatch = it })
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("Pandemic era issues")
+                    Switch(checked = pandemic, onCheckedChange = { pandemic = it })
+                }
+                OutlinedTextField(value = seed, onValueChange = { seed = it.take(32) }, label = { Text("Campaign seed") }, supportingText = { Text("Use the same seed to replay the same campaign") }, modifier = Modifier.fillMaxWidth())
             }
         }
         item {
-            Button(onClick = { session.newGame(scenarioId, player, selectedMate.id, staffIds.toList(), difficulty, mode, turns) }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Launch campaign →") }
+            Button(onClick = { session.newGame(scenarioId, player, selectedMate.id, staffIds.toList(), difficulty, mode, turns, seed, whatIfState, mirrorMatch, pandemic) }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Launch campaign →") }
             Spacer(Modifier.height(12.dp))
         }
     }
