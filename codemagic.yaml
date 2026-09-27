@@ -4,6 +4,48 @@
 # public runs; submit_to_testflight stays false and builds are assigned to
 # the internal group via the ASC API after upload, mirroring AHDNative.
 workflows:
+  ios-verify:
+    name: MOV native iOS compile check
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    environment:
+      xcode: "26.6"
+    cache:
+      cache_paths:
+        - $HOME/.gradle
+        - $HOME/.konan
+        - $HOME/android-sdk
+    scripts:
+      - name: Select JDK 21 and Android platform
+        script: |
+          set -eu
+          jdk=$(ls -d /Library/Java/JavaVirtualMachines/*21* 2>/dev/null | head -n 1)
+          if [ -z "$jdk" ]; then echo "No JDK 21 on builder"; exit 1; fi
+          export JAVA_HOME="$jdk/Contents/Home"
+          printf 'JAVA_HOME=%s\n' "$JAVA_HOME" >> "$CM_ENV"
+          export ANDROID_SDK_ROOT="$HOME/android-sdk"
+          printf 'ANDROID_SDK_ROOT=%s\n' "$ANDROID_SDK_ROOT" >> "$CM_ENV"
+          if [ ! -f "$ANDROID_SDK_ROOT/platforms/android-36/android.jar" ]; then
+            cd /tmp
+            curl -fsSL -o cmdtools.zip https://dl.google.com/android/repository/commandlinetools-mac-11076708_latest.zip
+            mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
+            unzip -q -o cmdtools.zip -d "$ANDROID_SDK_ROOT/cmdline-tools"
+            mv "$ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+            yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_ROOT" --licenses >/dev/null
+            "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_ROOT" "platforms;android-36"
+          fi
+          printf 'sdk.dir=%s\n' "$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Compile Kotlin framework and SwiftUI simulator app
+        script: |
+          set -eu
+          xcodebuild \
+            -project iosApp/MOVGameiOS.xcodeproj \
+            -scheme MOVGameiOS \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$CM_BUILD_DIR/build/DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
   ios-testflight:
     name: MOV iOS TestFlight build
     instance_type: mac_mini_m2

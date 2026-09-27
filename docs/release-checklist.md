@@ -29,9 +29,9 @@ this track cannot perform headless.
 
 - [ ] On a device: repeat the campaign close/reopen test and verify the shared
   save restores through the SwiftUI session.
-- [ ] macOS verify: `kmp.yml` iOS job green (blocked on billing; then
-  proves the SwiftUI mirror + `embedAndSignAppleFrameworkForXcode`
-  linkage compile).
+- [ ] macOS verify: run the `ios-verify` workflow in Codemagic on the
+  reviewed commit. It builds the Kotlin framework and SwiftUI simulator app
+  without signing or publishing. Record the build URL and result here.
 - [ ] App Store Connect: products matching the SKU table, sandbox +
   TestFlight exercise of purchase/restore/refund through `StoreKitAdapter`.
 - [ ] App Store Server Notifications endpoint on the campaign server (web
