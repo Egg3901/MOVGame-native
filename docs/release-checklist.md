@@ -51,8 +51,8 @@ The owner will resume portal setup when the migration completes.
   save restores through the SwiftUI session.
 - [x] macOS verify: Codemagic `ios-verify` fully passed for the native
   campaign menu, setup, dashboard, and results at
-  `7f460b3f316777ab755744b45dae04a1e8d81c6c` (build
-  `6ab9634e47e40d4dcee93533`). This workflow does not sign or publish.
+  `600e4f77fb591620bed1bb384d33ac0542e41f99` (build
+  `6ab9644bccabf1ff83f8db61`). This workflow does not sign or publish.
 - [ ] App Store Connect: products matching the SKU table, sandbox +
   TestFlight exercise of purchase/restore/refund through `StoreKitAdapter`.
 - [ ] App Store Server Notifications endpoint on the campaign server (web
