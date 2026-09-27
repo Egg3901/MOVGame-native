@@ -85,7 +85,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A0000010000000000000029,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,16 +202,6 @@
 			isa = PBXBuildFile;
 			fileRef = 7A0000010000000000000022;
 		};
-		7A0000010000000000000029 = {
-			isa = PBXBuildFile;
-			fileRef = 7A000001000000000000002A;
-		};
-		7A000001000000000000002A = {
-			isa = PBXFileReference;
-			explicitFileType = wrapper.framework;
-			path = shared.framework;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		7A000001000000000000002B = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
@@ -308,6 +297,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)");
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -315,6 +305,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = ("$(inherited)", "-framework", shared);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lakesidegames.electioneer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -329,6 +320,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)");
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -336,6 +328,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = ("$(inherited)", "-framework", shared);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lakesidegames.electioneer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
