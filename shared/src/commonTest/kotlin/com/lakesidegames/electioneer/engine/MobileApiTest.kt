@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 class MobileApiTest {
     @Test
     fun newGameExposesSetupAndProjection() {
-        val game = MobileGame.newGame("dem", "normal", 42L)
+        val game = MobileGame.startGame("dem", "normal", 42L)
         assertEquals("dem", game.playerSerial())
         assertEquals(0, game.turn())
         assertEquals(9, game.totalTurns())
@@ -24,7 +24,7 @@ class MobileApiTest {
 
     @Test
     fun queueAndEndTurn() {
-        val game = MobileGame.newGame("rep", "normal", 7L)
+        val game = MobileGame.startGame("rep", "normal", 7L)
         val slots = game.slotsLeft()
         assertTrue(slots > 0)
         val target = game.stateList().first { it.abbr == "PA" }
@@ -43,7 +43,7 @@ class MobileApiTest {
 
     @Test
     fun fullGameReachesResult() {
-        val game = MobileGame.newGame("dem", "easy", 1234L)
+        val game = MobileGame.startGame("dem", "easy", 1234L)
         repeat(game.totalTurns()) { game.endTurn() }
         assertTrue(game.isOver())
         assertTrue(game.hasResult())
@@ -54,7 +54,7 @@ class MobileApiTest {
 
     @Test
     fun unknownEventReadsAreSafe() {
-        val game = MobileGame.newGame("dem", "normal", 1L)
+        val game = MobileGame.startGame("dem", "normal", 1L)
         assertEquals("", game.eventPrompt("no-such-event"))
         assertTrue(game.eventChoices("no-such-event").isEmpty())
         assertTrue(game.answerEvent("no-such-event", "x").isNotEmpty())

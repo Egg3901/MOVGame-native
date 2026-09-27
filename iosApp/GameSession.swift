@@ -56,7 +56,7 @@ final class GameSession: ObservableObject {
 
     func newGame(playerSerial: String, difficulty: String) {
         let seed = Int64(Date().timeIntervalSince1970 * 1000)
-        game = MobileGame.companion.newGame(playerSerial: playerSerial, difficulty: difficulty, seed: seed)
+        game = MobileGame.companion.startGame(playerSerial: playerSerial, difficulty: difficulty, seed: seed)
         recapLines = []
         showRecap = false
         eventId = nil

@@ -20,7 +20,7 @@ class MobileGame private constructor(
             return MobileGame(saved.state, saved.seed)
         }
 
-        fun newGame(playerSerial: String, difficulty: String, seed: Long): MobileGame {
+        fun startGame(playerSerial: String, difficulty: String, seed: Long): MobileGame {
             val player = CandidateId.entries.first { it.serial == playerSerial }
             val state = createGame(
                 NewGameOptions(

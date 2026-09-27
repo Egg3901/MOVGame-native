@@ -8,7 +8,7 @@ import kotlin.test.assertNull
 class SaveGameTest {
     @Test
     fun restoresTheSameCampaignAndSeedForTheNextTurn() {
-        val original = MobileGame.newGame("dem", "normal", 4201L)
+        val original = MobileGame.startGame("dem", "normal", 4201L)
         original.queueAction("rally", "PA")
         val restored = assertNotNull(MobileGame.restore(original.saveSnapshot()))
         assertEquals(original.turn(), restored.turn())
@@ -22,7 +22,7 @@ class SaveGameTest {
     @Test
     fun rejectsCorruptAndFutureSaves() {
         assertNull(MobileGame.restore("broken"))
-        val saved = MobileGame.newGame("dem", "normal", 1L).saveSnapshot()
+        val saved = MobileGame.startGame("dem", "normal", 1L).saveSnapshot()
         assertNull(MobileGame.restore(saved.replace("\"version\":1", "\"version\":2")))
     }
 }
