@@ -5,9 +5,9 @@
   "description": "Margin of Victory native mobile clients and Tauri desktop shell",
   "scripts": {
     "native:verify": "./gradlew :shared:jvmTest :androidApp:assembleDebug",
-    "fetch:web": "./scripts/fetch-web.sh desktop-direct --no-build",
-    "build:web": "./scripts/fetch-web.sh desktop-direct",
-    "build:web:steam": "./scripts/fetch-web.sh steam",
+    "fetch:web": "node scripts/fetch-web.mjs desktop-direct --no-build",
+    "build:web": "node scripts/fetch-web.mjs desktop-direct",
+    "build:web:steam": "node scripts/fetch-web.mjs steam",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "desktop:build": "tauri build",
