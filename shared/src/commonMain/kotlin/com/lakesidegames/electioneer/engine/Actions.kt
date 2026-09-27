@@ -349,6 +349,7 @@ fun applyAction(game: GameState, action: CampaignAction, rng: Rng) {
     val res = game.resources.getValue(action.candidate.serial)
     if (res.actions < 1) return
     res.actions -= 1
+    val firstNewCause = game.causes.size
     // The player's campaigning is amplified by the difficulty handicap (1.0 for
     // the AI and on hard); it scales persuasion only, not cash/infra/prep.
     val mult = if (action.candidate == game.playerCandidate) (game.playerEdge ?: 1.0) else 1.0
@@ -363,6 +364,9 @@ fun applyAction(game: GameState, action: CampaignAction, rng: Rng) {
         ActionType.DEBATE_PREP -> applyDebatePrep(game, action)
         ActionType.POLICY_PREP -> applyPolicyPrep(game, action)
         ActionType.ISSUE_PIVOT -> applyIssuePivot(game, action, mult)
+    }
+    for (index in firstNewCause until game.causes.size) {
+        game.causes[index] = game.causes[index].copy(actor = action.candidate)
     }
 }
 
