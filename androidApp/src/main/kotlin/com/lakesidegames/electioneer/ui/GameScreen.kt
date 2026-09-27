@@ -123,7 +123,7 @@ fun GameScreen(session: GameSession) {
     recap?.let { lines ->
         AlertDialog(
             onDismissRequest = { session.dismissRecap() },
-            title = { Text("Week ${g.turn + 1} recap") },
+            title = { Text("Week ${g.turn} recap") },
             text = {
                 Column {
                     for (line in lines) {

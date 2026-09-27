@@ -90,7 +90,7 @@ struct GameView: View {
             }
             .background(Color(red: 10/255, green: 15/255, blue: 20/255))
             .preferredColorScheme(.dark)
-            .alert("Week \(Int(g.turn()) + 1) recap", isPresented: $session.showRecap) {
+            .alert("Week \(Int(g.turn())) recap", isPresented: $session.showRecap) {
                 Button("OK") { session.dismissRecap() }
             } message: {
                 Text(session.recapLines.joined(separator: "\n"))
