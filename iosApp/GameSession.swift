@@ -23,7 +23,7 @@ final class GameSession: ObservableObject {
 
     init() {
         if let snapshot = UserDefaults.standard.string(forKey: Self.saveKey),
-           let restored = MobileGame.restore(snapshot: snapshot) {
+           let restored = MobileGame.companion.restore(snapshot: snapshot) {
             game = restored
             playScreen = restored.isOver() ? .results : .game
             eventId = restored.pendingEventIds().first
@@ -50,13 +50,13 @@ final class GameSession: ObservableObject {
         }
     }
 
-    func candidates() -> [Candidate] { MobileGame.candidates() }
+    func candidates() -> [Candidate] { MobileGame.companion.candidates() }
 
-    func difficulties() -> [String] { MobileGame.difficulties() }
+    func difficulties() -> [String] { MobileGame.companion.difficulties() }
 
     func newGame(playerSerial: String, difficulty: String) {
         let seed = Int64(Date().timeIntervalSince1970 * 1000)
-        game = MobileGame.newGame(playerSerial: playerSerial, difficulty: difficulty, seed: seed)
+        game = MobileGame.companion.newGame(playerSerial: playerSerial, difficulty: difficulty, seed: seed)
         recapLines = []
         showRecap = false
         eventId = nil
