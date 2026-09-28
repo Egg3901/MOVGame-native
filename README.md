@@ -1,3 +1,17 @@
+# Native development moved to MOVGame
+
+All Margin of Victory clients are now maintained together in
+[Egg3901/MOVGame](https://github.com/Egg3901/MOVGame). Native source is in
+[`apps/native`](https://github.com/Egg3901/MOVGame/tree/main/apps/native),
+including Kotlin Multiplatform, Android Compose, iOS SwiftUI, and Tauri desktop.
+Web source remains at the repository root. Build and signing workflows run there.
+
+Use the MOVGame repository for new code, issues, and releases. This repository
+is retained for historical commits and links; its source is no longer the
+release target. Native history was preserved during the subtree import.
+
+---
+
 # Margin of Victory native clients
 
 Android uses Kotlin Multiplatform for the simulation and Jetpack Compose for the interface. iOS uses the same KMP simulation with a SwiftUI interface. Neither mobile app runs the web UI or a Tauri wrapper. Desktop remains a Tauri shell around the [MOVGame](https://github.com/Egg3901/MOVGame) web client.
